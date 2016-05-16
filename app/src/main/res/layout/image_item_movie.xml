@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:minHeight="?android:attr/listPreferredItemHeight"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <ImageView
+    <com.example.android.popularmovies.SquareImageView
         android:id="@+id/list_item_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:paddingLeft="16dp">
+
 
         <TextView
             android:id="@+id/list_item_version_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Feel The Light" />
+            android:text="Feel The Light"
+            android:background="#55000000"
+            android:layout_gravity="bottom"/>
 
 
         <TextView
@@ -32,6 +28,5 @@
             android:layout_height="wrap_content"
             android:text="Home" />
 
-    </LinearLayout>
 
-</LinearLayout>
+</FrameLayout>
