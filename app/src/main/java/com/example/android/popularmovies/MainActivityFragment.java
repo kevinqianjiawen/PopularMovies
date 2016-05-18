@@ -1,13 +1,23 @@
 package com.example.android.popularmovies;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ListView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Arrays;
 
 /**
@@ -42,6 +52,61 @@ public class MainActivityFragment extends Fragment {
         GridView gridView = (GridView) rootView.findViewById(R.id.gridview_poster);
         gridView.setAdapter(flavorAdapter);
 
+        //get the data from the internet
+        HttpURLConnection urlConnection = null;
+        BufferedReader reader = null;
+
+        //store the Json string from the internet
+        String movieJsonStr = null;
+
+        try{
+            String baseUrl = "https://api.themoviedb.org/3/movie/popular?";
+            String apiKey = "&api_key=" + BuildConfig.POPULAR_MOVIES_API_KEY;
+            URL url = new URL(baseUrl.concat(apiKey));
+
+            //Create a request to the moviedb, open the connection
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.connect();
+
+            //read data
+            InputStream inputStream = urlConnection.getInputStream();
+            StringBuffer buffer = new StringBuffer();
+            if(inputStream == null) {
+                return null;
+            }
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while((line = reader.readLine()) != null){
+                buffer.append(line+"\n");
+            }
+
+            if(buffer.length()==0){
+                return null;
+            }
+
+            movieJsonStr = buffer.toString();
+            Log.v("MovieFragment", movieJsonStr);
+        } catch(IOException e){
+            return null;
+        } finally {
+            if(urlConnection != null){
+                urlConnection.disconnect();
+            }
+
+            if(reader != null){
+                try{
+                    reader.close();
+                } catch (final IOException e){
+                    Log.e("MovieFragment", "Error closing stream", e);
+                }
+            }
+        }
+
+
         return rootView;
     }
+
+
 }
