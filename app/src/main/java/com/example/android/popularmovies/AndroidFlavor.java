@@ -4,15 +4,24 @@ package com.example.android.popularmovies;
  * Created by kevin on 5/15/2016.
  */
 public class AndroidFlavor {
-    String versionName;
-    String versionNumber;
-    int image; // drawable reference id
+    String movieTitle;
+    String movieDate;
+    double movieRate;
+    String movieDescription;
+    int image;
+    // drawable reference id
 
-    public AndroidFlavor(String vName, String vNumber, int image)
+    public AndroidFlavor(String mTitle, String mDate, double mRate, String mDescription, int image)
     {
-        this.versionName = vName;
-        this.versionNumber = vNumber;
+        this.movieTitle = mTitle;
+        this.movieDate = mDate;
+        this.movieRate = mRate;
+        this.movieDescription = mDescription;
         this.image = image;
+    }
+
+    public String toString(){
+        return movieTitle + "-" + movieDate + "-" + movieRate + "&" + movieDescription + "&" + image;
     }
 
 }
