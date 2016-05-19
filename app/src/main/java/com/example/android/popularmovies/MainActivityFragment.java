@@ -3,6 +3,7 @@ package com.example.android.popularmovies;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -63,7 +64,7 @@ public class MainActivityFragment extends Fragment {
         int id = item.getItemId();
         if(id == R.id.action_refresh){
             FetchDataTask movieTask = new FetchDataTask();
-            movieTask.execute();
+            movieTask.execute("popular");
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -88,8 +89,8 @@ public class MainActivityFragment extends Fragment {
         return rootView;
     }
 
-    public class FetchDataTask extends AsyncTask<Void, Void, Void> {
-        protected Void doInBackground(Void... params){
+    public class FetchDataTask extends AsyncTask<String, Void, Void> {
+        protected Void doInBackground(String... params){
             //get the data from the internet
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
@@ -98,9 +99,14 @@ public class MainActivityFragment extends Fragment {
             String movieJsonStr = null;
 
             try{
-                String baseUrl = "https://api.themoviedb.org/3/movie/popular?";
-                String apiKey = "&api_key=" + BuildConfig.POPULAR_MOVIES_API_KEY;
-                URL url = new URL(baseUrl.concat(apiKey));
+                String baseUrl = "https://api.themoviedb.org/3/movie/";
+                String API_PARAM ="api_key";
+
+                Uri uri = Uri.parse(baseUrl).buildUpon().appendPath(params[0]).appendQueryParameter(API_PARAM, BuildConfig.POPULAR_MOVIES_API_KEY).build();
+
+                URL url = new URL(uri.toString());
+
+                Log.v("Popular movie", uri.toString());
 
                 //Create a request to the moviedb, open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
