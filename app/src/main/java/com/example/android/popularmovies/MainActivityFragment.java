@@ -56,12 +56,14 @@ public class MainActivityFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_fragment, menu);
     }
-    
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_refresh){
+            FetchDataTask movieTask = new FetchDataTask();
+            movieTask.execute();
             return true;
         }
         return super.onOptionsItemSelected(item);
