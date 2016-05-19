@@ -3,10 +3,14 @@ package com.example.android.popularmovies;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
@@ -41,10 +45,34 @@ public class MainActivityFragment extends Fragment {
     public MainActivityFragment() {
     }
 
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_fragment, menu);
+    }
+    
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_refresh){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        //inflate menu
 
         flavorAdapter = new AndroidFlavorAdapter(getActivity(), Arrays.asList(androidFlavors));
 
@@ -52,60 +80,67 @@ public class MainActivityFragment extends Fragment {
         GridView gridView = (GridView) rootView.findViewById(R.id.gridview_poster);
         gridView.setAdapter(flavorAdapter);
 
-        //get the data from the internet
-        HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
 
-        //store the Json string from the internet
-        String movieJsonStr = null;
-
-        try{
-            String baseUrl = "https://api.themoviedb.org/3/movie/popular?";
-            String apiKey = "&api_key=" + BuildConfig.POPULAR_MOVIES_API_KEY;
-            URL url = new URL(baseUrl.concat(apiKey));
-
-            //Create a request to the moviedb, open the connection
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.connect();
-
-            //read data
-            InputStream inputStream = urlConnection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
-            if(inputStream == null) {
-                return null;
-            }
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-
-            String line;
-            while((line = reader.readLine()) != null){
-                buffer.append(line+"\n");
-            }
-
-            if(buffer.length()==0){
-                return null;
-            }
-
-            movieJsonStr = buffer.toString();
-            Log.v("MovieFragment", movieJsonStr);
-        } catch(IOException e){
-            return null;
-        } finally {
-            if(urlConnection != null){
-                urlConnection.disconnect();
-            }
-
-            if(reader != null){
-                try{
-                    reader.close();
-                } catch (final IOException e){
-                    Log.e("MovieFragment", "Error closing stream", e);
-                }
-            }
-        }
 
 
         return rootView;
+    }
+
+    public class FetchDataTask extends AsyncTask<Void, Void, Void> {
+        protected Void doInBackground(Void... params){
+            //get the data from the internet
+            HttpURLConnection urlConnection = null;
+            BufferedReader reader = null;
+
+            //store the Json string from the internet
+            String movieJsonStr = null;
+
+            try{
+                String baseUrl = "https://api.themoviedb.org/3/movie/popular?";
+                String apiKey = "&api_key=" + BuildConfig.POPULAR_MOVIES_API_KEY;
+                URL url = new URL(baseUrl.concat(apiKey));
+
+                //Create a request to the moviedb, open the connection
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                //read data
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                if(inputStream == null) {
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while((line = reader.readLine()) != null){
+                    buffer.append(line+"\n");
+                }
+
+                if(buffer.length()==0){
+                    return null;
+                }
+
+                movieJsonStr = buffer.toString();
+                Log.v("MovieFragment", movieJsonStr);
+            } catch(IOException e){
+                return null;
+            } finally {
+                if(urlConnection != null){
+                    urlConnection.disconnect();
+                }
+
+                if(reader != null){
+                    try{
+                        reader.close();
+                    } catch (final IOException e){
+                        Log.e("MovieFragment", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
     }
 
 
