@@ -79,12 +79,27 @@ public class MainActivityFragment extends Fragment {
     }
 
     public void updateMovie(){
-        FetchDataTask movieTask = new FetchDataTask();
-        String sort = PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getString(getString(R.string.pref_key),
-                        getString(R.string.pref_key_popular));
+        if(isOnline()) {
+            FetchDataTask movieTask = new FetchDataTask();
+            String sort = PreferenceManager.getDefaultSharedPreferences(getActivity())
+                    .getString(getString(R.string.pref_key),
+                            getString(R.string.pref_key_popular));
 
-        movieTask.execute(sort);
+            movieTask.execute(sort);
+        }else {
+            Toast.makeText(getContext(),"The wifi is unavilable",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        return isConnected;
     }
 
 
@@ -121,7 +136,10 @@ public class MainActivityFragment extends Fragment {
     }
 
     public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlavor>> {
-        protected ArrayList<AndroidFlavor> doInBackground(String... params){
+
+
+
+        protected ArrayList<AndroidFlavor> doInBackground(String... params) {
             //get the data from the internet
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
@@ -129,66 +147,68 @@ public class MainActivityFragment extends Fragment {
             //store the Json string from the internet
             String movieJsonStr = null;
 
-            try{
-                String baseUrl = "https://api.themoviedb.org/3/movie/";
-                String API_PARAM ="api_key";
 
-                Uri uri = Uri.parse(baseUrl).buildUpon().appendPath(params[0])
-                        .appendQueryParameter(API_PARAM, BuildConfig.POPULAR_MOVIES_API_KEY)
-                        .build();
+                try {
+                    String baseUrl = "https://api.themoviedb.org/3/movie/";
+                    String API_PARAM = "api_key";
 
-                URL url = new URL(uri.toString());
+                    Uri uri = Uri.parse(baseUrl).buildUpon().appendPath(params[0])
+                            .appendQueryParameter(API_PARAM, BuildConfig.POPULAR_MOVIES_API_KEY)
+                            .build();
 
-                Log.v("Popular movie", uri.toString());
+                    URL url = new URL(uri.toString());
 
-                //Create a request to the moviedb, open the connection
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
+                    Log.v("Popular movie", uri.toString());
 
-                //read data
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-                if(inputStream == null) {
+                    //Create a request to the moviedb, open the connection
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.connect();
+
+                    //read data
+                    InputStream inputStream = urlConnection.getInputStream();
+                    StringBuffer buffer = new StringBuffer();
+                    if (inputStream == null) {
+                        return null;
+                    }
+                    reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        buffer.append(line + "\n");
+                    }
+
+                    if (buffer.length() == 0) {
+                        return null;
+                    }
+
+                    movieJsonStr = buffer.toString();
+                    Log.v("MovieFragment", movieJsonStr);
+                } catch (IOException e) {
                     return null;
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
+                } finally {
+                    if (urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
 
-                String line;
-                while((line = reader.readLine()) != null){
-                    buffer.append(line+"\n");
-                }
-
-                if(buffer.length()==0){
-                    return null;
-                }
-
-                movieJsonStr = buffer.toString();
-                Log.v("MovieFragment", movieJsonStr);
-            } catch(IOException e){
-                return null;
-            } finally {
-                if(urlConnection != null){
-                    urlConnection.disconnect();
-                }
-
-                if(reader != null){
-                    try{
-                        reader.close();
-                    } catch (final IOException e){
-                        Log.e("MovieFragment", "Error closing stream", e);
+                    if (reader != null) {
+                        try {
+                            reader.close();
+                        } catch (final IOException e) {
+                            Log.e("MovieFragment", "Error closing stream", e);
+                        }
                     }
                 }
+
+                try {
+                    return getData(movieJsonStr);
+                } catch (JSONException e) {
+                    Log.e("Popular Movie", e.getMessage(), e);
+                    e.printStackTrace();
+                }
+                return null;
             }
 
-            try {
-                return getData(movieJsonStr);
-            } catch (JSONException e) {
-                Log.e("Popular Movie", e.getMessage(), e);
-                e.printStackTrace();
-            }
-            return null;
-        }
 
         @Override
         protected void onPostExecute(ArrayList<AndroidFlavor> result) {
