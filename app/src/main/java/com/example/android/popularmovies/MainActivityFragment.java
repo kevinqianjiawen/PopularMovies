@@ -14,8 +14,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityManager;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,14 +78,20 @@ public class MainActivityFragment extends Fragment {
         //inflate menu
         List<AndroidFlavor> movieList = new ArrayList<AndroidFlavor>();
 
-
+        
         flavorAdapter = new AndroidFlavorAdapter(getActivity(), movieList);
 
         // Get a reference to the ListView, and attach this adapter to it.
         GridView gridView = (GridView) rootView.findViewById(R.id.gridview_poster);
         gridView.setAdapter(flavorAdapter);
 
-
+        //add a click listener
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getActivity(), "debug", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         return rootView;
