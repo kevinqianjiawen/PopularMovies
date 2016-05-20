@@ -12,4 +12,12 @@
     <string name="detail_title">title</string>
     <string name="deatil_rate">rate</string>
     <string name="deatil_overview">overview</string>
+    
+    //perference
+    <string name="pref_label">Sort</string>
+    <string name="pref_key" translatable="false">sort</string>
+    <string name="pref_key_popular" translatable="false">popular</string>
+    <string name="pref_key_toprate" translatable="false">top_rate</string>
+    <string name="pref_value_popular">Popular</string>
+    <string name="pref_value_toprate">Top rate</string>
 </resources>
