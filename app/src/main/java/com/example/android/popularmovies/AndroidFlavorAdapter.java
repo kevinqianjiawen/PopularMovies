@@ -58,17 +58,17 @@ public class AndroidFlavorAdapter extends ArrayAdapter<AndroidFlavor> {
         }
 
         String url = "http://image.tmdb.org/t/p/w185" + androidFlavor.image;
-        
+
 
         ImageView iconView = (ImageView) convertView.findViewById(R.id.list_item_icon);
         Picasso.with(getContext()).load(url).into(iconView);
         //iconView.setImageResource(androidFlavor.image);
 
-        TextView versionNameView = (TextView) convertView.findViewById(R.id.list_item_version_name);
-        versionNameView.setText(androidFlavor.movieDate);
+       // TextView versionNameView = (TextView) convertView.findViewById(R.id.list_item_version_name);
+       // versionNameView.setText(androidFlavor.movieDate);
 
-        TextView versionNumberView = (TextView) convertView.findViewById(R.id.list_item_versionnumber_textview);
-        versionNumberView.setText(androidFlavor.movieTitle);
+        //TextView versionNumberView = (TextView) convertView.findViewById(R.id.list_item_versionnumber_textview);
+        //versionNumberView.setText(androidFlavor.movieTitle);
 
         return convertView;
     }
