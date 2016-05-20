@@ -1,16 +1,17 @@
 package com.example.android.popularmovies;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class DetailActivity extends ActionBarActivity {
 
@@ -42,6 +43,7 @@ public class DetailActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 
@@ -51,5 +53,24 @@ public class DetailActivity extends ActionBarActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
+    public static class DetailActivityFragment extends Fragment {
+
+        public DetailActivityFragment() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            Intent intent = getActivity().getIntent();
+            View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+
+            if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
+                String movieStr = intent.getStringExtra(Intent.EXTRA_TEXT);
+                ((TextView) rootView.findViewById(R.id.detail_title))
+                        .setText(movieStr);
+            }
+            return rootView;
+        }
+    }
 
 }
