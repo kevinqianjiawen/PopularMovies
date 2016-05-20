@@ -1,12 +1,15 @@
 package com.example.android.popularmovies;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -54,14 +57,18 @@ public class AndroidFlavorAdapter extends ArrayAdapter<AndroidFlavor> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.image_item_movie, parent, false);
         }
 
+        String url = "http://image.tmdb.org/t/p/w185" + androidFlavor.image;
+        
+
         ImageView iconView = (ImageView) convertView.findViewById(R.id.list_item_icon);
-        iconView.setImageResource(androidFlavor.image);
+        Picasso.with(getContext()).load(url).into(iconView);
+        //iconView.setImageResource(androidFlavor.image);
 
         TextView versionNameView = (TextView) convertView.findViewById(R.id.list_item_version_name);
         versionNameView.setText(androidFlavor.movieDate);
 
         TextView versionNumberView = (TextView) convertView.findViewById(R.id.list_item_versionnumber_textview);
-        versionNumberView.setText(androidFlavor.movieDescription);
+        versionNumberView.setText(androidFlavor.movieTitle);
 
         return convertView;
     }

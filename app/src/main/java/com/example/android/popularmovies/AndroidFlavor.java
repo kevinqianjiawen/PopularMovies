@@ -8,10 +8,10 @@ public class AndroidFlavor {
     String movieDate;
     double movieRate;
     String movieDescription;
-    int image;
+    String image;
     // drawable reference id
 
-    public AndroidFlavor(String mTitle, String mDate, double mRate, String mDescription, int image)
+    public AndroidFlavor(String mTitle, String mDate, double mRate, String mDescription, String image)
     {
         this.movieTitle = mTitle;
         this.movieDate = mDate;

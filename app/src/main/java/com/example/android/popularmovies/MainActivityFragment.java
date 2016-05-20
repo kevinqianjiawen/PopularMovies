@@ -38,16 +38,7 @@ public class MainActivityFragment extends Fragment {
 
     private AndroidFlavorAdapter flavorAdapter;
 
-    AndroidFlavor[] androidFlavors = {
-            new AndroidFlavor("Cupcake", "", 1.5, "", R.drawable.sample_0),
-            new AndroidFlavor("Donut","", 1.6, "", R.drawable.sample_1),
-            new AndroidFlavor("Eclair","", 2.0,"", R.drawable.sample_2),
-            new AndroidFlavor("Froyo","",2.2,"", R.drawable.sample_3),
-            new AndroidFlavor("GingerBread","",2.3,"", R.drawable.sample_4),
-            new AndroidFlavor("Honeycomb","", 3.0,"", R.drawable.sample_5),
-            new AndroidFlavor("Ice Cream Sandwich","", 4.0,"", R.drawable.sample_6),
-            new AndroidFlavor("Jelly Bean","", 4.1,"", R.drawable.sample_7)
-    };
+
 
     public MainActivityFragment() {
     }
@@ -82,7 +73,7 @@ public class MainActivityFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         //inflate menu
-        List<AndroidFlavor> movieList = new ArrayList<AndroidFlavor>(Arrays.asList(androidFlavors));
+        List<AndroidFlavor> movieList = new ArrayList<AndroidFlavor>();
 
 
         flavorAdapter = new AndroidFlavorAdapter(getActivity(), movieList);
@@ -195,7 +186,6 @@ public class MainActivityFragment extends Fragment {
             String release;
             double rate;
             String overview;
-            String poster;
             String posterPath;
 
             //get the json object
@@ -218,7 +208,7 @@ public class MainActivityFragment extends Fragment {
             posterPath = movie.getString(DATA_POSTER);
 
 
-            result.add(new AndroidFlavor(title,  release, rate, overview,2));
+            result.add(new AndroidFlavor(title,  release, rate, overview, posterPath));
 
         }
         for(AndroidFlavor a : result){
