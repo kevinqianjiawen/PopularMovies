@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.prefs.PreferenceChangeEvent;
 
 /**
  * Created by kevin on 5/15/2016.
@@ -64,12 +66,28 @@ public class MainActivityFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_refresh){
-            FetchDataTask movieTask = new FetchDataTask();
-            movieTask.execute("popular");
+            updateMovie();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateMovie();
+    }
+
+    public void updateMovie(){
+        FetchDataTask movieTask = new FetchDataTask();
+        String sort = PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getString(getString(R.string.pref_key),
+                        getString(R.string.pref_key_popular));
+
+        movieTask.execute(sort);
+    }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
