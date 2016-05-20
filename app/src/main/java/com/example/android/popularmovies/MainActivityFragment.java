@@ -133,7 +133,9 @@ public class MainActivityFragment extends Fragment {
                 String baseUrl = "https://api.themoviedb.org/3/movie/";
                 String API_PARAM ="api_key";
 
-                Uri uri = Uri.parse(baseUrl).buildUpon().appendPath(params[0]).appendQueryParameter(API_PARAM, BuildConfig.POPULAR_MOVIES_API_KEY).build();
+                Uri uri = Uri.parse(baseUrl).buildUpon().appendPath(params[0])
+                        .appendQueryParameter(API_PARAM, BuildConfig.POPULAR_MOVIES_API_KEY)
+                        .build();
 
                 URL url = new URL(uri.toString());
 

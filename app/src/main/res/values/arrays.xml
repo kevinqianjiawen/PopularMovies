@@ -7,6 +7,6 @@
 
     <array name="pref_sort_entries_values">
         <item>@string/pref_key_popular</item>
-        <item>@string/pref_value_toprate</item>
+        <item>@string/pref_key_toprated</item>
     </array>
 </resources>
