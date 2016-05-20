@@ -6,4 +6,10 @@
     <string name="action_settings">Settings</string>
     <string name="action_refresh" translatable="false">Refresh</string>
     <string name="title_activity_detail">DetailActivity</string>
+
+    //detail string
+    <string name="deatil_image">image</string>
+    <string name="detail_title">title</string>
+    <string name="deatil_rate">rate</string>
+    <string name="deatil_overview">overview</string>
 </resources>

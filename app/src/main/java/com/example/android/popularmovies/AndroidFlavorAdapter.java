@@ -64,8 +64,8 @@ public class AndroidFlavorAdapter extends ArrayAdapter<AndroidFlavor> {
         Picasso.with(getContext()).load(url).into(iconView);
         //iconView.setImageResource(androidFlavor.image);
 
-       // TextView versionNameView = (TextView) convertView.findViewById(R.id.list_item_version_name);
-       // versionNameView.setText(androidFlavor.movieDate);
+        //TextView versionNameView = (TextView) convertView.findViewById(R.id.deatil_overview);
+        //versionNameView.setText(androidFlavor.movieDate);
 
         //TextView versionNumberView = (TextView) convertView.findViewById(R.id.list_item_versionnumber_textview);
         //versionNumberView.setText(androidFlavor.movieTitle);

@@ -91,7 +91,9 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(getActivity(), "debug", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                AndroidFlavor movieIntent = flavorAdapter.getItem(position);
+                String movieStr = movieIntent.toString();
+                Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra(Intent.EXTRA_TEXT, movieStr);
                 startActivity(intent);
             }
         });
