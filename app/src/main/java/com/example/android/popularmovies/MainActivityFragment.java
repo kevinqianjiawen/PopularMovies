@@ -1,6 +1,7 @@
 package com.example.android.popularmovies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -78,7 +79,7 @@ public class MainActivityFragment extends Fragment {
         //inflate menu
         List<AndroidFlavor> movieList = new ArrayList<AndroidFlavor>();
 
-        
+
         flavorAdapter = new AndroidFlavorAdapter(getActivity(), movieList);
 
         // Get a reference to the ListView, and attach this adapter to it.
@@ -89,7 +90,9 @@ public class MainActivityFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "debug", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "debug", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                startActivity(intent);
             }
         });
 
