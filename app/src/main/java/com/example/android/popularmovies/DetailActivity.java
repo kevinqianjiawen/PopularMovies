@@ -6,12 +6,18 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 public class DetailActivity extends ActionBarActivity {
 
@@ -24,6 +30,8 @@ public class DetailActivity extends ActionBarActivity {
                     .add(R.id.container, new DetailActivityFragment())
                     .commit();
         }
+
+
     }
 
 
@@ -61,13 +69,31 @@ public class DetailActivity extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            Intent intent = getActivity().getIntent();
-            View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
-            if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-                String movieStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-                ((TextView) rootView.findViewById(R.id.detail_title))
-                        .setText(movieStr);
+            View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+            Intent intent = getActivity().getIntent();
+            ((TextView) rootView.findViewById(R.id.detail_title))
+                    .setText("hahahahaha");
+
+            if (intent != null && intent.hasExtra("movie")) {
+                AndroidFlavor movie = (AndroidFlavor) intent.getParcelableExtra("movie");
+                Log.v("bad", movie.toString());
+              //  ((TextView) rootView.findViewById(R.id.detail_title))
+               //         .setText("hahahahaha");
+                Log.v("bad", movie.titleToStr());
+                //((TextView) rootView.findViewById(R.id.detail_release))
+                //       .setText(movie.titleToStr());
+
+                //((TextView) rootView.findViewById(R.id.detail_rate))
+                //        .setText(movie.rateToStr());
+           ;
+                //((TextView) rootView.findViewById(R.id.detail_overview))
+                 //       .setText(movie.descriptionToStr());
+
+                //String url = "http://image.tmdb.org/t/p/w185" + movie.imageToStr();
+                //Log.v("pop", url);
+                //ImageView iconView = (ImageView) rootView.findViewById(R.id.detail_image);
+                //Picasso.with(getActivity()).load(url).into(iconView);
             }
             return rootView;
         }

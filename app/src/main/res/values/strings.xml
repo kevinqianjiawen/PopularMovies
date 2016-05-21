@@ -10,6 +10,7 @@
     //detail string
     <string name="deatil_image">image</string>
     <string name="detail_title">title</string>
+    <string name="detail_release">release</string>
     <string name="deatil_rate">rate</string>
     <string name="deatil_overview">overview</string>
     

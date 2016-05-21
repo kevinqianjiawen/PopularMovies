@@ -6,27 +6,53 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.android.popularmovies.DetailActivity"
-    tools:showIn="@layout/activity_detail">
+    tools:context="com.example.android.popularmovies.DetailActivity">
 
 
-    <ImageView
-        android:id="@+id/deatil_image"
+    <com.example.android.popularmovies.SquareImageView
+        android:id="@+id/detail_image"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+         />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toRightOf="@+id/detail_image"
+        android:layout_marginLeft="10dp">
+
+        <TextView
+            android:id="@+id/detail_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"/>
+
+        <TextView
+            android:id="@+id/detail_release"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="30sp"/>
+
+        <TextView
+            android:id="@+id/detail_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="30sp"/>
+
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/detail_title"
+        android:id="@+id/detail_overview"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
 
-    <TextView
-        android:id="@+id/deatil_rate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:textSize="30sp"
+        android:layout_below="@+id/detail_image"
+        android:layout_marginTop="30dp"/>
 
-    <TextView
-        android:id="@+id/deatil_overview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 </RelativeLayout>

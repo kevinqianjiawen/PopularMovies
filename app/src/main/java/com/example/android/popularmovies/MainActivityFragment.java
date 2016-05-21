@@ -45,7 +45,6 @@ public class MainActivityFragment extends Fragment {
     private AndroidFlavorAdapter flavorAdapter;
 
 
-
     public MainActivityFragment() {
     }
 
@@ -125,8 +124,7 @@ public class MainActivityFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(getActivity(), "debug", Toast.LENGTH_SHORT).show();
                 AndroidFlavor movieIntent = flavorAdapter.getItem(position);
-                String movieStr = movieIntent.toString();
-                Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra(Intent.EXTRA_TEXT, movieStr);
+                Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra("movie", movieIntent);
                 startActivity(intent);
             }
         });
