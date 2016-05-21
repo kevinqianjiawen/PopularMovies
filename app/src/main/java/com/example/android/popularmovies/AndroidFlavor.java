@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by kevin on 5/15/2016.
  */
@@ -36,9 +38,10 @@ public class AndroidFlavor implements Parcelable{
         return movieDate;
     }
 
-    public String rateToStr(){
-        String rate = Double.toString(Math.round(movieRate));
-        return rate;
+    public double rateGet(){
+        //DecimalFormat oneDec = new DecimalFormat();
+        //oneDec.setDecimalSeparatorAlwaysShown(false);
+        return movieRate;
     }
 
     public String descriptionToStr(){
@@ -76,8 +79,8 @@ public class AndroidFlavor implements Parcelable{
 
     private AndroidFlavor(Parcel in) {
         movieTitle = in.readString();
-        movieRate = in.readDouble();
         movieDate = in.readString();
+        movieRate = in.readDouble();
         movieDescription = in.readString();
         image = in.readString();
     }
