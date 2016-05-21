@@ -9,11 +9,11 @@
     tools:context="com.example.android.popularmovies.DetailActivity">
 
 
-    <com.example.android.popularmovies.SquareImageView
+    <ImageView
         android:id="@+id/detail_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
+
          />
 
     <LinearLayout
@@ -27,7 +27,7 @@
             android:id="@+id/detail_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp"/>
+            />
 
         <TextView
             android:id="@+id/detail_release"

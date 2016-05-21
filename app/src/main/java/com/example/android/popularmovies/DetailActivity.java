@@ -72,28 +72,33 @@ public class DetailActivity extends ActionBarActivity {
 
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
             Intent intent = getActivity().getIntent();
-            ((TextView) rootView.findViewById(R.id.detail_title))
-                    .setText("hahahahaha");
+
 
             if (intent != null && intent.hasExtra("movie")) {
                 AndroidFlavor movie = (AndroidFlavor) intent.getParcelableExtra("movie");
-                Log.v("bad", movie.toString());
-              //  ((TextView) rootView.findViewById(R.id.detail_title))
-               //         .setText("hahahahaha");
-                Log.v("bad", movie.titleToStr());
-                //((TextView) rootView.findViewById(R.id.detail_release))
-                //       .setText(movie.titleToStr());
+                //Log.v("bad", movie.toString());
 
-                //((TextView) rootView.findViewById(R.id.detail_rate))
-                //        .setText(movie.rateToStr());
+                TextView title = (TextView) rootView.findViewById(R.id.detail_title);
+                title.setText(movie.titleToStr());
+                title.setTextSize(20);
+
+                TextView release = (TextView) rootView.findViewById(R.id.detail_release);
+                release.setText(movie.dateToStr());
+                release.setTextSize(20);
+
+
+                TextView rate =(TextView) rootView.findViewById(R.id.detail_rate);
+                rate.setText(""+ movie.rateGet());
+                rate.setTextSize(20);
            ;
-                //((TextView) rootView.findViewById(R.id.detail_overview))
-                 //       .setText(movie.descriptionToStr());
+                TextView overview = (TextView) rootView.findViewById(R.id.detail_overview);
+                overview.setText(movie.descriptionToStr());
+                overview.setTextSize(20);
 
-                //String url = "http://image.tmdb.org/t/p/w185" + movie.imageToStr();
+                String url = "http://image.tmdb.org/t/p/w500" + movie.imageToStr();
                 //Log.v("pop", url);
-                //ImageView iconView = (ImageView) rootView.findViewById(R.id.detail_image);
-                //Picasso.with(getActivity()).load(url).into(iconView);
+                ImageView iconView = (ImageView) rootView.findViewById(R.id.detail_image);
+                Picasso.with(getActivity()).load(url).into(iconView);
             }
             return rootView;
         }
