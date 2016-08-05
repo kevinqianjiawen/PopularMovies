@@ -158,7 +158,7 @@ public class MainActivityFragment extends Fragment {
 
                     Log.v("Popular movie", uri.toString());
 
-                    //Create a request to the moviedb, open the connection
+                                    //Create a request to the moviedb, open the connection
                     urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.setRequestMethod("GET");
                     urlConnection.connect();
