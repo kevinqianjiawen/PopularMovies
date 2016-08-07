@@ -40,9 +40,9 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 		Log.w(LOG_TAG, "Upgrading database from version " + oldVersion + " to " +
 				newVersion + ". OLD DATA WILL BE DESTROYED");
 		// Drop the table
-		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FlavorsContract.FlavorEntry.TABLE_FLAVORS);
+		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" +
-                FlavorsContract.FlavorEntry.TABLE_FLAVORS + "'");
+                MovieContract.MovieEntry.TABLE_NAME + "'");
 
 		// re-create database
 		onCreate(sqLiteDatabase);
