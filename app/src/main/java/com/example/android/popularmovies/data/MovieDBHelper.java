@@ -10,7 +10,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 
 	//name & version
 	private static final String DATABASE_NAME = "movie.db";
-	private static final int DATABASE_VERSION = 12;
+	private static final int DATABASE_VERSION = 2;
 
 	public MovieDBHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -21,7 +21,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase sqLiteDatabase) {
 		final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " +
 				MovieContract.MovieEntry.TABLE_NAME + "(" + MovieContract.MovieEntry._ID +
-				" INTEGER PRIMARY KEY AUTOINCREMENT, " +
+				" INTEGER PRIMARY KEY, " +
 				MovieContract.MovieEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
 				MovieContract.MovieEntry.COLUMN_DESCRIPTION +
 				" TEXT NOT NULL, " +

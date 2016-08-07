@@ -28,10 +28,10 @@ public class MovieContract{
 			.appendPath(TABLE_NAME).build();
 		// create cursor of base type directory for multiple entries
 		public static final String CONTENT_DIR_TYPE =
-		ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
+				ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
 		// create cursor of base type item for single entry
 		public static final String CONTENT_ITEM_TYPE =
-			ContentResolver.CURSOR_ITEM_BASE_TYPE +"/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
+				ContentResolver.CURSOR_ITEM_BASE_TYPE +"/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
 
 		// for building URIs on insertion
 		public static Uri buildMovieUri(long id){
