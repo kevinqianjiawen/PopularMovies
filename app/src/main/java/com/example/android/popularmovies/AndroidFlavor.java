@@ -10,6 +10,7 @@ import java.text.DecimalFormat;
  * Created by kevin on 5/15/2016.
  */
 public class AndroidFlavor implements Parcelable{
+    int id;
     String movieTitle;
     String movieDate;
     double movieRate;
@@ -17,8 +18,9 @@ public class AndroidFlavor implements Parcelable{
     String image;
     // drawable reference id
 
-    public AndroidFlavor(String mTitle, String mDate, double mRate, String mDescription, String image)
+    public AndroidFlavor(int id, String mTitle, String mDate, double mRate, String mDescription, String image)
     {
+        this.id = id;
         this.movieTitle = mTitle;
         this.movieDate = mDate;
         this.movieRate = mRate;
@@ -29,6 +31,8 @@ public class AndroidFlavor implements Parcelable{
     public String toString(){
         return movieTitle + "-" + movieDate + "-" + movieRate + "&" + movieDescription + "&" + image;
     }
+
+    public int getid(){ return id; }
 
     public String titleToStr(){
         return movieTitle;
@@ -59,6 +63,7 @@ public class AndroidFlavor implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(movieTitle);
         dest.writeString(movieDate);
         dest.writeDouble(movieRate);
@@ -78,6 +83,7 @@ public class AndroidFlavor implements Parcelable{
 
 
     private AndroidFlavor(Parcel in) {
+        id = in.readInt();
         movieTitle = in.readString();
         movieDate = in.readString();
         movieRate = in.readDouble();

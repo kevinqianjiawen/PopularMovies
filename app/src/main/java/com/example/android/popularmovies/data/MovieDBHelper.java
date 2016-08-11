@@ -10,7 +10,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 
 	//name & version
 	private static final String DATABASE_NAME = "movie.db";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 6;
 
 	public MovieDBHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -21,14 +21,17 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase sqLiteDatabase) {
 		final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " +
 				MovieContract.MovieEntry.TABLE_NAME + "(" + MovieContract.MovieEntry._ID +
-				" INTEGER PRIMARY KEY, " +
+				" INTEGER PRIMARY KEY AUTOINCREMENT, " +
+				MovieContract.MovieEntry.COLUMN_ID + " INT NOT NULL, " +
 				MovieContract.MovieEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
 				MovieContract.MovieEntry.COLUMN_DESCRIPTION +
 				" TEXT NOT NULL, " +
 				MovieContract.MovieEntry.COLUMN_RATING +
 				" REAL NOT NULL, " +
 				MovieContract.MovieEntry.COLUMN_DATE +
-				" DATE NOT NULL "
+				" DATE NOT NULL, " +
+				MovieContract.MovieEntry.COLUMN_IMAGE +
+				" TEXT NOT NULL"
 				+");";
 
 		sqLiteDatabase.execSQL(SQL_CREATE_MOVIE_TABLE);
@@ -41,8 +44,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 				newVersion + ". OLD DATA WILL BE DESTROYED");
 		// Drop the table
 		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieEntry.TABLE_NAME);
-        sqLiteDatabase.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" +
-                MovieContract.MovieEntry.TABLE_NAME + "'");
+
 
 		// re-create database
 		onCreate(sqLiteDatabase);

@@ -16,11 +16,12 @@ public class MovieContract{
 		// table name
 		public static final String TABLE_NAME = "movie";
 		// columns
-		public static final String _ID = "_id";
+		public static final String COLUMN_ID = "movie_id";
 		public static final String COLUMN_TITLE = "title";
 		public static final String COLUMN_DESCRIPTION = "description";
 		public static final String COLUMN_RATING = "rating";
-		public static final String COLUMN_DATE = "release date";
+		public static final String COLUMN_DATE = "release_date";
+		public static final String COLUMN_IMAGE = "image_path";
 
 
 		// create content uri

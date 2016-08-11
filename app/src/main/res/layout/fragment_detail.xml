@@ -48,6 +48,12 @@
 
             android:textSize="30sp"/>
 
+        <CheckBox android:id="@+id/star"
+            style="?android:attr/starStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
 
     </LinearLayout>
 
@@ -58,7 +64,8 @@
 
         android:textSize="30sp"
         android:layout_below="@+id/detail_image"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="30dp"
+        />
 
 </RelativeLayout>
 </ScrollView>

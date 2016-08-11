@@ -19,6 +19,8 @@
     <string name="pref_key" translatable="false">sort</string>
     <string name="pref_key_popular" translatable="false">popular</string>
     <string name="pref_key_toprated" translatable="false">top_rated</string>
+    <string name="pref_key_favortie" translatable="false">favorite</string>
     <string name="pref_value_popular">Popular</string>
     <string name="pref_value_toprate">Top rate</string>
+    <string name="pref_value_favortie">Favorite</string>
 </resources>
