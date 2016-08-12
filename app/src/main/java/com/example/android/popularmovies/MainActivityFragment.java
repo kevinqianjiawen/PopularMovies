@@ -155,6 +155,17 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             gridViewFavorite.setAdapter(favoriteAdapter);
 
 
+            gridViewFavorite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+                    Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+                    if (cursor != null) {
+                        Intent intent = new Intent(getActivity(), DetailActivity.class).setData(MovieContract.MovieEntry.buildMovieUri(cursor.getLong(COL_MOVIE_ID)));
+                        startActivity(intent);
+                    }
+                }
+            });
 
         }else {
             rootView = inflater.inflate(R.layout.fragment_main, container, false);
@@ -169,17 +180,21 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             gridView = (GridView) rootView.findViewById(R.id.gridview_poster);
             gridView.setAdapter(flavorAdapter);
 
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                    //Toast.makeText(getActivity(), "debug", Toast.LENGTH_SHORT).show();
+
+                    AndroidFlavor movieIntent = flavorAdapter.getItem(position);
+
+                    Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra("movie", movieIntent);
+                    startActivity(intent);
+                }
+            });
+
         }
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(getActivity(), "debug", Toast.LENGTH_SHORT).show();
-                AndroidFlavor movieIntent = flavorAdapter.getItem(position);
-                Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra("movie", movieIntent);
-                startActivity(intent);
-            }
-        });
+
 
         return rootView;
     }

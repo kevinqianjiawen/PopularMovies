@@ -144,6 +144,10 @@ public class DetailActivity extends AppCompatActivity {
 
             }
 
+            if(intent != null){
+                mMovieStr = intent.getDataString();
+            }
+
             if(null != mMovieStr){
                 ((TextView) rootView.findViewById(R.id.detail_title))
                         .setText(mMovieStr);
