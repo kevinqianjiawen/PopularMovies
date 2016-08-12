@@ -43,7 +43,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new DetailActivityFragmentFavorite())
+                    .add(R.id.container, new DetailActivityFragment())
                     .commit();
         }
 
@@ -80,107 +80,5 @@ public class DetailActivity extends AppCompatActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class DetailActivityFragmentFavorite extends Fragment {
-        private static final String LOG_TAG = DetailActivityFragmentFavorite.class.getSimpleName();
 
-
-        private static final int DETAIL_LOADER = 0;
-
-        private static final String[] FAVORTIE_COLUMNS = {
-                MovieContract.MovieEntry._ID,
-                MovieContract.MovieEntry.COLUMN_ID,
-                MovieContract.MovieEntry.COLUMN_TITLE,
-                MovieContract.MovieEntry.COLUMN_DATE,
-                MovieContract.MovieEntry.COLUMN_RATING,
-                MovieContract.MovieEntry.COLUMN_DESCRIPTION,
-                MovieContract.MovieEntry.COLUMN_IMAGE
-        };
-
-        // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
-        // must change.
-        static final int COL_ID = 0;
-        static final int COL_MOVIE_ID = 1;
-        static final int COL_MOVIE_TITLE = 2;
-        static final int COL_MOVIE_DATE = 3;
-        static final int COL_MOVIE_RATING = 4;
-        static final int COL_MOVIE_DESCRIPTION = 5;
-        static final int COL_MOVIE_IMAGE = 6;
-
-
-        public DetailActivityFragmentFavorite() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-
-            View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-            Intent intent = getActivity().getIntent();
-
-
-            if (intent != null && intent.hasExtra("movie")) {
-                AndroidFlavor movie = (AndroidFlavor) intent.getParcelableExtra("movie");
-                //Log.v("bad", movie.toString());
-
-                final int idText = movie.getid();
-
-                TextView title = (TextView) rootView.findViewById(R.id.detail_title);
-                final String titleText = movie.titleToStr();
-                title.setText(titleText);
-                title.setTextSize(20);
-
-                TextView release = (TextView) rootView.findViewById(R.id.detail_release);
-                final String releaseText = movie.dateToStr();
-                release.setText(releaseText);
-                release.setTextSize(20);
-
-
-                TextView rate = (TextView) rootView.findViewById(R.id.detail_rate);
-                final double rateText = movie.rateGet();
-                rate.setText("" + rateText);
-                rate.setTextSize(20);
-                ;
-                TextView overview = (TextView) rootView.findViewById(R.id.detail_overview);
-                final String descriptionText = movie.descriptionToStr();
-                overview.setText(descriptionText);
-                overview.setTextSize(20);
-
-                final String url = "http://image.tmdb.org/t/p/w500" + movie.imageToStr();
-                //Log.v("pop", url);
-                ImageView iconView = (ImageView) rootView.findViewById(R.id.detail_image);
-                Picasso.with(getActivity()).load(url).into(iconView);
-
-                //a star check box, if the user click it, the favorite will add to the database;
-                final CheckBox checkBox = (CheckBox) rootView.findViewById(R.id.star);
-                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked) {
-                            ContentValues movieValues = new ContentValues();
-
-                            movieValues.put(MovieContract.MovieEntry.COLUMN_ID, idText);
-                            movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, titleText);
-                            movieValues.put(MovieContract.MovieEntry.COLUMN_DATE, releaseText);
-                            movieValues.put(MovieContract.MovieEntry.COLUMN_RATING, rateText);
-                            movieValues.put(MovieContract.MovieEntry.COLUMN_DESCRIPTION, descriptionText);
-                            movieValues.put(MovieContract.MovieEntry.COLUMN_IMAGE, url);
-
-                            getContext().getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, movieValues);
-
-                            Log.v("DATABASE", "Insert complete");
-                        } else {
-                            getContext().getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI, "movie_id=?", new String[]{String.valueOf(idText)});
-                            Log.v("DATABASE", "Delete complete");
-                        }
-                    }
-                });
-
-            }
-
-
-            return rootView;
-        }
-
-
-    }
 }
