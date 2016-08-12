@@ -118,7 +118,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        String sort_by = getSortBy();
+        String sort_by = Utility.getSortBy(getContext());
         if (sort_by.equals(getString(R.string.pref_key_favortie))) {
             //set the gridview as favorite
             rootView = inflater.inflate(R.layout.fragment_favorite,container,false);
@@ -173,12 +173,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         return rootView;
     }
 
-    private String getSortBy(){
-        // Gets back the choice selected by the user to sort the movies
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String sort_by = sharedPrefs.getString(getString(R.string.pref_key), getString(R.string.pref_key_popular));
-        return sort_by;
-    }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

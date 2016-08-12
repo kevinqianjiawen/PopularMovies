@@ -42,16 +42,13 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new DetailActivityFragment())
-                    .commit();
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container, new DetailActivityFragment())
+                        .commit();
+            }
         }
 
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-    }
 
 
     @Override

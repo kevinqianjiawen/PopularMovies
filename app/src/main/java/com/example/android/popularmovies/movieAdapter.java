@@ -23,22 +23,22 @@ public class movieAdapter extends CursorAdapter {
 
     public static class FavortieViewHolder {
         public final ImageView iconView;
-        public final TextView titleView;
-        public final ImageView posterView;
-        public final TextView dateView;
-        public final TextView rateView;
-        public final CheckBox starView;
-        public final TextView descriptionView;
+//        public final TextView titleView;
+//        public final ImageView posterView;
+//        public final TextView dateView;
+//        public final TextView rateView;
+//        public final CheckBox starView;
+//        public final TextView descriptionView;
 
 
         public FavortieViewHolder(View view) {
             iconView = (ImageView) view.findViewById(R.id.list_item_icon);
-            titleView = (TextView) view.findViewById(R.id.detail__favorite_title);
-            posterView = (ImageView) view.findViewById(R.id.detail_favorite_image);
-            dateView = (TextView) view.findViewById(R.id.detail_favorite_release);
-            rateView = (TextView) view.findViewById(R.id.detail_favorite_rate);
-            starView = (CheckBox) view.findViewById(R.id.favorite_star);
-            descriptionView = (TextView) view.findViewById(R.id.detail_favorite_overview);
+//            titleView = (TextView) view.findViewById(R.id.detail__favorite_title);
+//            posterView = (ImageView) view.findViewById(R.id.detail_favorite_image);
+//            dateView = (TextView) view.findViewById(R.id.detail_favorite_release);
+//            rateView = (TextView) view.findViewById(R.id.detail_favorite_rate);
+//            starView = (CheckBox) view.findViewById(R.id.favorite_star);
+//            descriptionView = (TextView) view.findViewById(R.id.detail_favorite_overview);
 
         }
     }

@@ -66,23 +66,19 @@ public class DetailActivityFragment extends Fragment {
             TextView title = (TextView) rootView.findViewById(R.id.detail_title);
             final String titleText = movie.titleToStr();
             title.setText(titleText);
-            title.setTextSize(20);
 
             TextView release = (TextView) rootView.findViewById(R.id.detail_release);
             final String releaseText = movie.dateToStr();
             release.setText(releaseText);
-            release.setTextSize(20);
 
 
             TextView rate = (TextView) rootView.findViewById(R.id.detail_rate);
             final double rateText = movie.rateGet();
             rate.setText("" + rateText);
-            rate.setTextSize(20);
-            ;
+
             TextView overview = (TextView) rootView.findViewById(R.id.detail_overview);
             final String descriptionText = movie.descriptionToStr();
             overview.setText(descriptionText);
-            overview.setTextSize(20);
 
             final String url = "http://image.tmdb.org/t/p/w500" + movie.imageToStr();
             //Log.v("pop", url);

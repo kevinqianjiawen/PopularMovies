@@ -15,9 +15,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.popularmovies.data.MovieContract;
+import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -48,6 +53,13 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
     static final int COL_MOVIE_DESCRIPTION = 5;
     static final int COL_MOVIE_IMAGE = 6;
 
+    private TextView mTitleView;
+    private ImageView mPosterView;
+    private TextView mDateView;
+    private TextView mRateView;
+    private CheckBox mStarView;
+    private TextView mDescriptionView;
+
 
     public DetailActivityFragmentFavorite() {
     }
@@ -57,6 +69,13 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_favoritedetail, container, false);
+
+        mPosterView = (ImageView)rootView.findViewById(R.id.detail_favorite_image);
+        mTitleView = (TextView) rootView.findViewById(R.id.detail__favorite_title);
+        mDateView = (TextView)rootView.findViewById(R.id.detail_favorite_release);
+        mRateView = (TextView) rootView.findViewById(R.id.detail_favorite_rate);
+        mStarView = (CheckBox) rootView.findViewById(R.id.favorite_star);
+        mDescriptionView = (TextView) rootView.findViewById(R.id.detail_favorite_overview);
 
         return rootView;
     }
@@ -93,17 +112,20 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
         int movieId = data.getInt(COL_MOVIE_ID);
 
         String movieTitle = data.getString(COL_MOVIE_TITLE);
+        mTitleView.setText(movieTitle);
 
-        double movieRate = data.getDouble(COL_MOVIE_RATING);
+        Double movieRate = data.getDouble(COL_MOVIE_RATING);
+        mRateView.setText("" + movieRate);
 
         String movieDescription = data.getString(COL_MOVIE_DESCRIPTION);
+        mDescriptionView.setText(movieDescription);
 
         String movieDate = data.getString(COL_MOVIE_DATE);
+        mDateView.setText(movieDate);
 
         String movieImage = data.getString(COL_MOVIE_IMAGE);
-
-        TextView detailTextView = (TextView)getView().findViewById(R.id.detail__favorite_title);
-        detailTextView.setText(movieTitle);
+        String url = "http://image.tmdb.org/t/p/w500" + movieImage;
+        Picasso.with(getActivity()).load(url).into(mPosterView);
 
 
 
