@@ -40,6 +40,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     private GridView gridViewFavorite;
     private View rootView;
 
+
     private static final int FAVORITE_LOADER = 0;
 
 
