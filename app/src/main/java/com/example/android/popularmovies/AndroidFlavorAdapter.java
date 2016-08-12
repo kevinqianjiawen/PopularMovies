@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +19,28 @@ import java.util.List;
  */
 public class AndroidFlavorAdapter extends ArrayAdapter<AndroidFlavor> {
     private static final String LOG_TAG = AndroidFlavorAdapter.class.getSimpleName();
+
+    public static class ViewHolder {
+        public final ImageView iconView;
+        public final TextView titleView;
+        public final ImageView posterView;
+        public final TextView dateView;
+        public final TextView rateView;
+        public final CheckBox starView;
+        public final TextView descriptionView;
+
+
+        public ViewHolder(View view) {
+            iconView = (ImageView) view.findViewById(R.id.list_item_icon);
+            titleView = (TextView) view.findViewById(R.id.detail_title);
+            posterView = (ImageView) view.findViewById(R.id.detail_image);
+            dateView = (TextView) view.findViewById(R.id.detail_release);
+            rateView = (TextView) view.findViewById(R.id.detail_rate);
+            starView = (CheckBox) view.findViewById(R.id.star);
+            descriptionView = (TextView) view.findViewById(R.id.detail_overview);
+
+        }
+    }
 
     /**
      * This is our own custom constructor (it doesn't mirror a superclass constructor).
@@ -49,6 +72,8 @@ public class AndroidFlavorAdapter extends ArrayAdapter<AndroidFlavor> {
         // Gets the AndroidFlavor object from the ArrayAdapter at the appropriate position
         AndroidFlavor androidFlavor = getItem(position);
 
+
+
         // Adapters recycle views to AdapterViews.
         // If this is a new View object we're getting, then inflate the layout.
         // If not, this view already has the layout inflated from a previous call to getView,
@@ -57,11 +82,12 @@ public class AndroidFlavorAdapter extends ArrayAdapter<AndroidFlavor> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.image_item_movie, parent, false);
         }
 
+        ViewHolder viewHolder = new ViewHolder(convertView);
         String url = "http://image.tmdb.org/t/p/w185" + androidFlavor.image;
 
 
         ImageView iconView = (ImageView) convertView.findViewById(R.id.list_item_icon);
-        Picasso.with(getContext()).load(url).into(iconView);
+        Picasso.with(getContext()).load(url).into(viewHolder.iconView);
         //iconView.setImageResource(androidFlavor.image);
 
         //TextView versionNameView = (TextView) convertView.findViewById(R.id.deatil_overview);
