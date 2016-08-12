@@ -26,5 +26,7 @@ import android.widget.ImageView;
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             setMeasuredDimension(getMeasuredWidth(), getMeasuredWidth()); //Snap to width
         }
+
+
     }
 

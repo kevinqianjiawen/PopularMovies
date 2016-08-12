@@ -6,10 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
 import com.example.android.popularmovies.data.MovieContract;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -25,7 +27,7 @@ public class movieAdapter extends CursorAdapter {
         This is ported from FetchDataTask --- but now we go straight from the cursor to the
         string.
      */
-    private AndroidFlavor convertCursorRowToUXFormat(Cursor cursor){
+    private String convertCursorRowToUXFormat(Cursor cursor){
         //get row indices for our cursor
         int idx_id = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_ID);
         int idx_title = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_TITLE);
@@ -34,10 +36,10 @@ public class movieAdapter extends CursorAdapter {
         int idx_description = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_DESCRIPTION);
         int idx_image = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_IMAGE);
 
-        //create a android flavor class
-        AndroidFlavor movieFlavor = new AndroidFlavor(cursor.getInt(idx_id), cursor.getString(idx_title), cursor.getString(idx_date),cursor.getDouble(idx_rate),cursor.getString(idx_description),cursor.getString(idx_image));
 
-        return movieFlavor;
+
+
+        return cursor.getString(idx_image);
     }
 
     @Override
@@ -51,8 +53,8 @@ public class movieAdapter extends CursorAdapter {
         public void bindView(View view, Context context, Cursor cursor) {
         // our view is pretty simple here --- just a text view
         // we'll keep the UI functional with a simple (and slow!) binding.
-
-        TextView tv = (TextView)view;
-        tv.setText(convertCursorRowToUXFormat(cursor).toString());
+        String url = "http://image.tmdb.org/t/p/w185" + convertCursorRowToUXFormat(cursor);
+        ImageView iconView = (ImageView) view.findViewById(R.id.list_item_icon);
+        Picasso.with(context).load(url).into(iconView);
     }
 }

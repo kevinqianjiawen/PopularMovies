@@ -2,6 +2,8 @@ package com.example.android.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -21,6 +23,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.example.android.popularmovies.data.MovieContract;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +47,11 @@ import java.util.prefs.PreferenceChangeEvent;
 public class MainActivityFragment extends Fragment {
 
     private AndroidFlavorAdapter flavorAdapter;
+    private movieAdapter favoriteAdapter;
+
+    private GridView gridView;
+    private GridView gridViewFavorite;
+    private View rootView;
 
 
     public MainActivityFragment() {
@@ -106,31 +115,65 @@ public class MainActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        //inflate menu
-        List<AndroidFlavor> movieList = new ArrayList<AndroidFlavor>();
+        String sort_by = getSortBy();
+        if (sort_by.equals(getString(R.string.pref_key_favortie))) {
+            //set the gridview as favorite
+            rootView = inflater.inflate(R.layout.fragment_favorite,container,false);
+
+            gridViewFavorite = (GridView) rootView.findViewById(R.id.gridview_favorite);
+            Uri movieUri = MovieContract.MovieEntry.CONTENT_URI;
+            Cursor cur = getActivity().getContentResolver().query(movieUri, null, null, null, null);
+            favoriteAdapter = new movieAdapter(getActivity(), cur, 0);
+            gridViewFavorite.setAdapter(favoriteAdapter);
 
 
-        flavorAdapter = new AndroidFlavorAdapter(getActivity(), movieList);
 
-        // Get a reference to the ListView, and attach this adapter to it.
-        GridView gridView = (GridView) rootView.findViewById(R.id.gridview_poster);
-        gridView.setAdapter(flavorAdapter);
+        }else {
+            rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        //add a click listener
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(getActivity(), "debug", Toast.LENGTH_SHORT).show();
-                AndroidFlavor movieIntent = flavorAdapter.getItem(position);
-                Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra("movie", movieIntent);
-                startActivity(intent);
-            }
-        });
+            //inflate menu
+            List<AndroidFlavor> movieList = new ArrayList<AndroidFlavor>();
+
+
+            flavorAdapter = new AndroidFlavorAdapter(getActivity(), movieList);
+
+            // Get a reference to the ListView, and attach this adapter to it.
+            gridView = (GridView) rootView.findViewById(R.id.gridview_poster);
+            gridView.setAdapter(flavorAdapter);
+
+
+
+
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //Toast.makeText(getActivity(), "debug", Toast.LENGTH_SHORT).show();
+                    AndroidFlavor movieIntent = flavorAdapter.getItem(position);
+                    Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra("movie", movieIntent);
+                    startActivity(intent);
+                }
+            });
+
+
+        }
+
+
+
+
+
+
+
 
 
         return rootView;
+    }
+
+    private String getSortBy(){
+        // Gets back the choice selected by the user to sort the movies
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String sort_by = sharedPrefs.getString(getString(R.string.pref_key), getString(R.string.pref_key_popular));
+        return sort_by;
     }
 
 

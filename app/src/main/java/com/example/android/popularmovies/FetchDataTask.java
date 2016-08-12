@@ -28,7 +28,6 @@ import java.util.ArrayList;
 public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlavor>> {
 
     private AndroidFlavorAdapter flavorAdapter;
-    private movieAdapter mMovieAdapter;
     private final Context mContext;
 
     public FetchDataTask(Context context, AndroidFlavorAdapter mflavorAdapter) {
@@ -44,21 +43,6 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
         //store the Json string from the internet
         String movieJsonStr = null;
 
-        if(params[0] == "favorite"){
-            //the uri to query the data
-            Uri movieUri = MovieContract.MovieEntry.CONTENT_URI;
-
-            //query the data of movie
-            Cursor cur = mContext.getContentResolver().query(movieUri, null, null, null, null);
-
-            //return the arraylist of androidflavor
-            mMovieAdapter = new movieAdapter(mContext, cur, 0);
-
-
-
-
-
-        }
 
 
         try {
