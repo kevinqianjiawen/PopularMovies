@@ -28,18 +28,8 @@ public class movieAdapter extends CursorAdapter {
         string.
      */
     private String convertCursorRowToUXFormat(Cursor cursor){
-        //get row indices for our cursor
-        int idx_id = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_ID);
-        int idx_title = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_TITLE);
-        int idx_date = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_DATE);
-        int idx_rate = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_RATING);
-        int idx_description = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_DESCRIPTION);
-        int idx_image = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_IMAGE);
 
-
-
-
-        return cursor.getString(idx_image);
+        return cursor.getString(MainActivityFragment.COL_MOVIE_IMAGE);
     }
 
     @Override

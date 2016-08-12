@@ -69,6 +69,9 @@ public class DetailActivity extends AppCompatActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class DetailActivityFragment extends Fragment {
+        private static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
+
+        private String mMovieStr;
 
         public DetailActivityFragment() {
         }
@@ -139,6 +142,11 @@ public class DetailActivity extends AppCompatActivity {
                 });
 
 
+            }
+
+            if(null != mMovieStr){
+                ((TextView) rootView.findViewById(R.id.detail_title))
+                        .setText(mMovieStr);
             }
 
 
