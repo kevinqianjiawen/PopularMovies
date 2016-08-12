@@ -1,12 +1,9 @@
 package com.example.android.popularmovies;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.net.Uri;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -22,11 +19,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.popularmovies.data.MovieContract;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
+/**
+ * Created by kevin on 8/12/2016.
+ */
+
 
 public class DetailActivity extends AppCompatActivity {
+
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +43,14 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new DetailActivityFragment())
+                    .add(R.id.container, new DetailActivityFragmentFavorite())
                     .commit();
         }
 
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
@@ -68,12 +80,34 @@ public class DetailActivity extends AppCompatActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class DetailActivityFragment extends Fragment {
-        private static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
+    public static class DetailActivityFragmentFavorite extends Fragment {
+        private static final String LOG_TAG = DetailActivityFragmentFavorite.class.getSimpleName();
 
-        private String mMovieStr;
 
-        public DetailActivityFragment() {
+        private static final int DETAIL_LOADER = 0;
+
+        private static final String[] FAVORTIE_COLUMNS = {
+                MovieContract.MovieEntry._ID,
+                MovieContract.MovieEntry.COLUMN_ID,
+                MovieContract.MovieEntry.COLUMN_TITLE,
+                MovieContract.MovieEntry.COLUMN_DATE,
+                MovieContract.MovieEntry.COLUMN_RATING,
+                MovieContract.MovieEntry.COLUMN_DESCRIPTION,
+                MovieContract.MovieEntry.COLUMN_IMAGE
+        };
+
+        // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
+        // must change.
+        static final int COL_ID = 0;
+        static final int COL_MOVIE_ID = 1;
+        static final int COL_MOVIE_TITLE = 2;
+        static final int COL_MOVIE_DATE = 3;
+        static final int COL_MOVIE_RATING = 4;
+        static final int COL_MOVIE_DESCRIPTION = 5;
+        static final int COL_MOVIE_IMAGE = 6;
+
+
+        public DetailActivityFragmentFavorite() {
         }
 
         @Override
@@ -101,11 +135,11 @@ public class DetailActivity extends AppCompatActivity {
                 release.setTextSize(20);
 
 
-                TextView rate =(TextView) rootView.findViewById(R.id.detail_rate);
+                TextView rate = (TextView) rootView.findViewById(R.id.detail_rate);
                 final double rateText = movie.rateGet();
-                rate.setText(""+rateText);
+                rate.setText("" + rateText);
                 rate.setTextSize(20);
-           ;
+                ;
                 TextView overview = (TextView) rootView.findViewById(R.id.detail_overview);
                 final String descriptionText = movie.descriptionToStr();
                 overview.setText(descriptionText);
@@ -134,26 +168,14 @@ public class DetailActivity extends AppCompatActivity {
                             getContext().getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, movieValues);
 
                             Log.v("DATABASE", "Insert complete");
-                        }else{
+                        } else {
                             getContext().getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI, "movie_id=?", new String[]{String.valueOf(idText)});
                             Log.v("DATABASE", "Delete complete");
                         }
                     }
                 });
 
-
             }
-
-            if(intent != null){
-                mMovieStr = intent.getDataString();
-            }
-
-            if(null != mMovieStr){
-                ((TextView) rootView.findViewById(R.id.detail_title))
-                        .setText(mMovieStr);
-            }
-
-
 
 
             return rootView;
@@ -161,6 +183,4 @@ public class DetailActivity extends AppCompatActivity {
 
 
     }
-
-
 }

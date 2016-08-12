@@ -7,42 +7,26 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.android.popularmovies.data.MovieContract;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.prefs.PreferenceChangeEvent;
 
 /**
  * Created by kevin on 5/15/2016.
@@ -62,23 +46,13 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     private static final String[] FAVORTIE_COLUMNS = {
             MovieContract.MovieEntry._ID,
-            MovieContract.MovieEntry.COLUMN_ID,
-            MovieContract.MovieEntry.COLUMN_TITLE,
-            MovieContract.MovieEntry.COLUMN_DATE,
-            MovieContract.MovieEntry.COLUMN_RATING,
-            MovieContract.MovieEntry.COLUMN_DESCRIPTION,
             MovieContract.MovieEntry.COLUMN_IMAGE
     };
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
     // must change.
     static final int COL_ID = 0;
-    static final int COL_MOVIE_ID = 1;
-    static final int COL_MOVIE_TITLE = 2;
-    static final int COL_MOVIE_DATE = 3;
-    static final int COL_MOVIE_RATING = 4;
-    static final int COL_MOVIE_DESCRIPTION = 5;
-    static final int COL_MOVIE_IMAGE = 6;
+    static final int COL_MOVIE_IMAGE = 1;
 
 
 
@@ -161,7 +135,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
                     Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                     if (cursor != null) {
-                        Intent intent = new Intent(getActivity(), DetailActivity.class).setData(MovieContract.MovieEntry.buildMovieUri(cursor.getLong(COL_MOVIE_ID)));
+                        Intent intent = new Intent(getActivity(), DetailActivityFavorite.class).setData(MovieContract.MovieEntry.CONTENT_URI);
                         startActivity(intent);
                     }
                 }
@@ -207,36 +181,36 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
     @Override
-        public void onActivityCreated(Bundle savedInstanceState) {
-                getLoaderManager().initLoader(FAVORITE_LOADER, null, this);
-                super.onActivityCreated(savedInstanceState);
-            }
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(FAVORITE_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
 
     @Override
-        public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Uri movieUri = MovieContract.MovieEntry.CONTENT_URI;
 
-                        return new CursorLoader(getActivity(),
-                                movieUri,
-                                FAVORTIE_COLUMNS,
-                                null,
-                                null,
-                                null);
-            }
+        return new CursorLoader(getActivity(),
+                movieUri,
+                FAVORTIE_COLUMNS,
+                null,
+                null,
+                null);
+    }
     @Override
-        public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         //because I use two adapter to get the data from the internet or sql
         if (favoriteAdapter != null) {
             favoriteAdapter.swapCursor(cursor);
         }
     }
 
-                @Override
-        public void onLoaderReset(Loader<Cursor> cursorLoader) {
-                    if (favoriteAdapter != null) {
-                        favoriteAdapter.swapCursor(null);
-                    }
-                }
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+        if (favoriteAdapter != null) {
+            favoriteAdapter.swapCursor(null);
+        }
+    }
 
 
 
