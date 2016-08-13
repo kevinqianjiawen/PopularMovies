@@ -137,9 +137,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         String sort_by = Utility.getSortBy(getContext());
         if (sort_by.equals(getString(R.string.pref_key_favortie))) {
             //set the gridview as favorite
-            rootView = inflater.inflate(R.layout.fragment_favorite,container,false);
+            rootView = inflater.inflate(R.layout.fragment_main,container,false);
 
-            gridViewFavorite = (GridView) rootView.findViewById(R.id.gridview_favorite);
+            gridViewFavorite = (GridView) rootView.findViewById(R.id.gridview_poster);
 
             favoriteAdapter = new movieAdapter(getActivity(), null, 0);
             gridViewFavorite.setAdapter(favoriteAdapter);

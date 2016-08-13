@@ -68,14 +68,14 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_favoritedetail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        mPosterView = (ImageView)rootView.findViewById(R.id.detail_favorite_image);
-        mTitleView = (TextView) rootView.findViewById(R.id.detail__favorite_title);
-        mDateView = (TextView)rootView.findViewById(R.id.detail_favorite_release);
-        mRateView = (TextView) rootView.findViewById(R.id.detail_favorite_rate);
-        mStarView = (CheckBox) rootView.findViewById(R.id.favorite_star);
-        mDescriptionView = (TextView) rootView.findViewById(R.id.detail_favorite_overview);
+        mPosterView = (ImageView)rootView.findViewById(R.id.detail_image);
+        mTitleView = (TextView) rootView.findViewById(R.id.detail_title);
+        mDateView = (TextView)rootView.findViewById(R.id.detail_release);
+        mRateView = (TextView) rootView.findViewById(R.id.detail_rate);
+        mStarView = (CheckBox) rootView.findViewById(R.id.star);
+        mDescriptionView = (TextView) rootView.findViewById(R.id.detail_overview);
 
         return rootView;
     }
