@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -39,6 +41,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     private GridView gridView;
     private GridView gridViewFavorite;
     private View rootView;
+    private AndroidFlavor movieIntent;
 
 
     private static final int FAVORITE_LOADER = 0;
@@ -54,6 +57,18 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     // must change.
     static final int COL_ID = 0;
     static final int COL_MOVIE_IMAGE = 1;
+
+    /**
+          * A callback interface that all activities containing this fragment must
+          * implement. This mechanism allows activities to be notified of item
+         * selections.
+          */
+        public interface Callback {
+                /**
+                  * DetailFragmentCallback for when an item has been selected.
+                  */
+                        public void onItemSelected(AndroidFlavor androidFlavor);
+            }
 
 
 
@@ -136,7 +151,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
                     Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                     if (cursor != null) {
-                        Intent intent = new Intent(getActivity(), DetailActivityFavorite.class).setData(MovieContract.MovieEntry.CONTENT_URI);
+                        Intent intent = new Intent(getActivity(), DetailActivity.class).setData(MovieContract.MovieEntry.CONTENT_URI);
                         startActivity(intent);
                     }
                 }
@@ -160,10 +175,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                     //Toast.makeText(getActivity(), "debug", Toast.LENGTH_SHORT).show();
 
-                    AndroidFlavor movieIntent = flavorAdapter.getItem(position);
+                     movieIntent = flavorAdapter.getItem(position);
 
-                    Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra("movie", movieIntent);
-                    startActivity(intent);
+                    //Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra("movie", movieIntent);
+                    //startActivity(intent);
+                    ((Callback) getActivity())
+                            .onItemSelected(movieIntent);
                 }
             });
 

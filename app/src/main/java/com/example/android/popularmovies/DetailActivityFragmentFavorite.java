@@ -30,7 +30,7 @@ import org.w3c.dom.Text;
 public class DetailActivityFragmentFavorite extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String LOG_TAG = DetailActivityFragmentFavorite.class.getSimpleName();
 
-
+    static final String DETAIL = "Detail";
     private static final int DETAIL_LOADER = 0;
 
     private static final String[] FAVORTIE_COLUMNS = {
@@ -92,7 +92,7 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
         Log.v(LOG_TAG, "In onCreateLoader");
 
         Intent intent = getActivity().getIntent();
-        if (intent == null) {
+        if (intent == null || intent.getData() == null) {
             return null;
         }
 

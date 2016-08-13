@@ -2,6 +2,7 @@ package com.example.android.popularmovies;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -23,7 +24,9 @@ public class DetailActivityFragment extends Fragment {
     private static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
 
 
-    private static final int DETAIL_LOADER = 0;
+
+    static final String DETAIL_URI = "URI";
+    private AndroidFlavor movie;
 
     private static final String[] FAVORTIE_COLUMNS = {
             MovieContract.MovieEntry._ID,
@@ -53,13 +56,20 @@ public class DetailActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         Intent intent = getActivity().getIntent();
 
+        Bundle arguments = getArguments();
+        if (arguments != null){
+            movie = arguments.getParcelable(DetailActivityFragment.DETAIL_URI);
+        }
 
-        if (intent != null && intent.hasExtra("movie")) {
-            AndroidFlavor movie = (AndroidFlavor) intent.getParcelableExtra("movie");
-            //Log.v("bad", movie.toString());
+        if ((intent != null && intent.hasExtra("movie") ) || movie != null) {
+            if(movie == null) {
+                movie = (AndroidFlavor) intent.getParcelableExtra("movie");
+                //Log.v("bad", movie.toString());
+            }
 
             final int idText = movie.getid();
 
