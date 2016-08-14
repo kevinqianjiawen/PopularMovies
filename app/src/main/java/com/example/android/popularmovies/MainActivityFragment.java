@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -68,6 +69,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                   * DetailFragmentCallback for when an item has been selected.
                   */
                         public void onItemSelected(AndroidFlavor androidFlavor);
+
+              //DetailFragmentFavorite call back for when an item has been selected.
+
+                        public void onItemSelected(Uri uri);
             }
 
 
@@ -151,8 +156,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
                     Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                     if (cursor != null) {
-                        Intent intent = new Intent(getActivity(), DetailActivity.class).setData(MovieContract.MovieEntry.CONTENT_URI);
-                        startActivity(intent);
+                        //Intent intent = new Intent(getActivity(), DetailActivity.class).setData(MovieContract.MovieEntry.CONTENT_URI);
+                        //startActivity(intent);
+                        ((Callback) getActivity()).onItemSelected(MovieContract.MovieEntry.buildMovieUri(cursor.getInt(COL_ID)));
                     }
                 }
             });

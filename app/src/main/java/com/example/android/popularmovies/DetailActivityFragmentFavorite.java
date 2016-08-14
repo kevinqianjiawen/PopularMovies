@@ -6,6 +6,7 @@ package com.example.android.popularmovies;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -30,8 +31,9 @@ import org.w3c.dom.Text;
 public class DetailActivityFragmentFavorite extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String LOG_TAG = DetailActivityFragmentFavorite.class.getSimpleName();
 
-    static final String DETAIL = "Detail";
+    static final String DETAIL_FAVORITE = "DetailFavortie";
     private static final int DETAIL_LOADER = 0;
+    private Uri mUri;
 
     private static final String[] FAVORTIE_COLUMNS = {
             MovieContract.MovieEntry._ID,
@@ -67,6 +69,10 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle arguments = getArguments();
+        if(arguments != null){
+            mUri = arguments.getParcelable(DetailActivityFragmentFavorite.DETAIL_FAVORITE);
+        }
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
@@ -82,26 +88,24 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        Intent intent = getActivity().getIntent();
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Log.v(LOG_TAG, "In onCreateLoader");
 
-        Intent intent = getActivity().getIntent();
-        if (intent == null || intent.getData() == null) {
-            return null;
+        if (mUri != null) {
+            return new CursorLoader(getActivity(),
+                    mUri,
+                    FAVORTIE_COLUMNS,
+                    null,
+                    null,
+                    null);
         }
-
-        return new CursorLoader(getActivity(),
-                intent.getData(),
-                FAVORTIE_COLUMNS,
-                null,
-                null,
-                null);
+        return  null;
     }
 
     @Override

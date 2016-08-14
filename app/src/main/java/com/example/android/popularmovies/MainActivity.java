@@ -74,7 +74,7 @@ public class MainActivity extends ActionBarActivity implements MainActivityFragm
             // adding or replacing the detail fragment using a
             // fragment transaction.
             Bundle args = new Bundle();
-            args.putParcelable(DetailActivityFragment.DETAIL_URI, androidFlavor);
+            args.putParcelable(DetailActivityFragment.DETAIL, androidFlavor);
 
             DetailActivityFragment fragment = new DetailActivityFragment();
             fragment.setArguments(args);
@@ -82,9 +82,37 @@ public class MainActivity extends ActionBarActivity implements MainActivityFragm
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.movie_detail_container, fragment, DETAILFRAGMENT_TAG)
                     .commit();
+
+
         } else {
             Intent intent = new Intent(this, DetailActivity.class)
                     .putExtra("movie", androidFlavor);
+            startActivity(intent);
+        }
+    }
+    @Override
+
+    //for the two pane favortie fragment
+    public void onItemSelected(Uri contentUri){
+        if (mTwoPane) {
+            // In two-pane mode, show the detail view in this activity by
+            // adding or replacing the detail fragment using a
+            // fragment transaction.
+
+            Bundle args = new Bundle();
+            args.putParcelable(DetailActivityFragmentFavorite.DETAIL_FAVORITE, contentUri);
+
+            DetailActivityFragmentFavorite fragment = new DetailActivityFragmentFavorite();
+            fragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.movie_detail_container, fragment, DETAILFRAGMENT_TAG)
+                    .commit();
+
+
+        } else {
+            Intent intent = new Intent(this, DetailActivity.class)
+                    .setData(contentUri);
             startActivity(intent);
         }
     }

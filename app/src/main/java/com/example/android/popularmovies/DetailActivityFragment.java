@@ -25,7 +25,7 @@ public class DetailActivityFragment extends Fragment {
 
 
 
-    static final String DETAIL_URI = "URI";
+    static final String DETAIL = "DETAIL";
     private AndroidFlavor movie;
 
     private static final String[] FAVORTIE_COLUMNS = {
@@ -62,7 +62,7 @@ public class DetailActivityFragment extends Fragment {
 
         Bundle arguments = getArguments();
         if (arguments != null){
-            movie = arguments.getParcelable(DetailActivityFragment.DETAIL_URI);
+            movie = arguments.getParcelable(DetailActivityFragment.DETAIL);
         }
 
         if ((intent != null && intent.hasExtra("movie") ) || movie != null) {
