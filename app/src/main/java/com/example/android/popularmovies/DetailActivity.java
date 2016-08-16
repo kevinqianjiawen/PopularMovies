@@ -47,14 +47,21 @@ public class DetailActivity extends AppCompatActivity {
             // using a fragment transaction.
             String sort_by = Utility.getSortBy(getApplicationContext());
             if (sort_by.equals("favorite")) {
+                Bundle args = new Bundle();
+                args.putParcelable(DetailActivityFragmentFavorite.DETAIL_FAVORITE, getIntent().getData());
+
+                DetailActivityFragmentFavorite fragment = new DetailActivityFragmentFavorite();
+                fragment.setArguments(args);
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.movie_detail_container, new DetailActivityFragmentFavorite())
+                        .add(R.id.movie_detail_container, fragment)
                         .commit();
             }else{
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.movie_detail_container, new DetailActivityFragment())
                         .commit();
             }
+
+
         }
         }
 

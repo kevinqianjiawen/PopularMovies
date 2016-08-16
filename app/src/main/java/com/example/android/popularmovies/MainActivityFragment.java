@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.android.popularmovies.data.MovieContract;
@@ -43,6 +44,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     private GridView gridViewFavorite;
     private View rootView;
     private AndroidFlavor movieIntent;
+
+    private String sort_by;
+
+    private int mPosition = GridView.INVALID_POSITION;
+
+    private  static final String SELECTED_KEY = "selected_position";
 
 
     private static final int FAVORITE_LOADER = 0;
@@ -139,7 +146,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        String sort_by = Utility.getSortBy(getContext());
+       sort_by = Utility.getSortBy(getContext());
         if (sort_by.equals(getString(R.string.pref_key_favortie))) {
             //set the gridview as favorite
             rootView = inflater.inflate(R.layout.fragment_main,container,false);
@@ -160,8 +167,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                         //startActivity(intent);
                         ((Callback) getActivity()).onItemSelected(MovieContract.MovieEntry.buildMovieUri(cursor.getInt(COL_ID)));
                     }
+
                 }
             });
+
+
+
 
         }else {
             rootView = inflater.inflate(R.layout.fragment_main, container, false);
@@ -187,15 +198,21 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                     //startActivity(intent);
                     ((Callback) getActivity())
                             .onItemSelected(movieIntent);
+
                 }
+
+
             });
+
 
         }
 
 
 
+
         return rootView;
     }
+
 
 
 
@@ -222,6 +239,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         if (favoriteAdapter != null) {
             favoriteAdapter.swapCursor(cursor);
         }
+
     }
 
     @Override

@@ -111,7 +111,9 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor data) {
         Log.v(LOG_TAG, "In onLoadFinished");
-        if (!data.moveToFirst()) { return; }
+        if (data.moveToFirst() && data != null) {
+
+
 
         int movieId = data.getInt(COL_MOVIE_ID);
 
@@ -132,7 +134,7 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
         Picasso.with(getActivity()).load(url).into(mPosterView);
 
 
-
+    }
     }
 
     @Override
