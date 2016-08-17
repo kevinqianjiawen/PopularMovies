@@ -86,7 +86,7 @@ public class AndroidFlavorAdapter extends ArrayAdapter<AndroidFlavor> {
         String url = "http://image.tmdb.org/t/p/w185" + androidFlavor.image;
 
 
-        ImageView iconView = (ImageView) convertView.findViewById(R.id.list_item_icon);
+        //ImageView iconView = (ImageView) convertView.findViewById(R.id.list_item_icon);
         Picasso.with(getContext()).load(url).into(viewHolder.iconView);
         //iconView.setImageResource(androidFlavor.image);
 

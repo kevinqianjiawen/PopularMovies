@@ -4,7 +4,9 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +22,7 @@ import com.squareup.picasso.Picasso;
 /**
  * Created by kevin on 8/12/2016.
  */
-public class DetailActivityFragment extends Fragment {
+public class DetailActivityFragment extends Fragment{
     private static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
 
 
@@ -96,11 +98,12 @@ public class DetailActivityFragment extends Fragment {
             Picasso.with(getActivity()).load(url).into(iconView);
 
             //a star check box, if the user click it, the favorite will add to the database;
-            final CheckBox checkBox = (CheckBox) rootView.findViewById(R.id.star);
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            final com.example.android.popularmovies.FloatingActionButton checkBox = (com.example.android.popularmovies.FloatingActionButton) rootView.findViewById(R.id.action_button);
+            checkBox.setOnCheckedChangeListener(new com.example.android.popularmovies.FloatingActionButton.OnCheckedChangeListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
+                public void onCheckedChanged(com.example.android.popularmovies.FloatingActionButton fabView, boolean isChecked) {
+                    if (isChecked){
+
                         ContentValues movieValues = new ContentValues();
 
                         movieValues.put(MovieContract.MovieEntry.COLUMN_ID, idText);
@@ -113,12 +116,18 @@ public class DetailActivityFragment extends Fragment {
                         getContext().getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, movieValues);
 
                         Log.v("DATABASE", "Insert complete");
-                    } else {
+
+
+
+                    }else {
+
                         getContext().getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI, "movie_id=?", new String[]{String.valueOf(idText)});
                         Log.v("DATABASE", "Delete complete");
+
                     }
                 }
-            });
+                }
+            );
 
         }
 

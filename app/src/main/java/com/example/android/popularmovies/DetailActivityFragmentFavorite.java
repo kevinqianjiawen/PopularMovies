@@ -4,10 +4,12 @@ package com.example.android.popularmovies;
  * Created by kevin on 8/12/2016.
  */
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -59,8 +61,8 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
     private ImageView mPosterView;
     private TextView mDateView;
     private TextView mRateView;
-    private CheckBox mStarView;
     private TextView mDescriptionView;
+    private com.example.android.popularmovies.FloatingActionButton mButtonView;
 
 
     public DetailActivityFragmentFavorite() {
@@ -80,8 +82,8 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
         mTitleView = (TextView) rootView.findViewById(R.id.detail_title);
         mDateView = (TextView)rootView.findViewById(R.id.detail_release);
         mRateView = (TextView) rootView.findViewById(R.id.detail_rate);
-        mStarView = (CheckBox) rootView.findViewById(R.id.star);
         mDescriptionView = (TextView) rootView.findViewById(R.id.detail_overview);
+        mButtonView = (com.example.android.popularmovies.FloatingActionButton) rootView.findViewById(R.id.action_button);
 
         return rootView;
     }
@@ -115,26 +117,51 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
 
 
 
-        int movieId = data.getInt(COL_MOVIE_ID);
+        final int movieId = data.getInt(COL_MOVIE_ID);
 
-        String movieTitle = data.getString(COL_MOVIE_TITLE);
+        final String movieTitle = data.getString(COL_MOVIE_TITLE);
         mTitleView.setText(movieTitle);
 
-        Double movieRate = data.getDouble(COL_MOVIE_RATING);
+        final Double movieRate = data.getDouble(COL_MOVIE_RATING);
         mRateView.setText("" + movieRate);
 
-        String movieDescription = data.getString(COL_MOVIE_DESCRIPTION);
+        final String movieDescription = data.getString(COL_MOVIE_DESCRIPTION);
         mDescriptionView.setText(movieDescription);
 
-        String movieDate = data.getString(COL_MOVIE_DATE);
+        final String movieDate = data.getString(COL_MOVIE_DATE);
         mDateView.setText(movieDate);
 
-        String movieImage = data.getString(COL_MOVIE_IMAGE);
-        String url = "http://image.tmdb.org/t/p/w500" + movieImage;
+        final String movieImage = data.getString(COL_MOVIE_IMAGE);
+        final String url = "http://image.tmdb.org/t/p/w500" + movieImage;
         Picasso.with(getActivity()).load(url).into(mPosterView);
+            mButtonView.setChecked(true);
+
+            mButtonView.setOnCheckedChangeListener(new com.example.android.popularmovies.FloatingActionButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(com.example.android.popularmovies.FloatingActionButton fabView, boolean isChecked) {
+                    if(isChecked){
+                    ContentValues movieValues = new ContentValues();
+
+                    movieValues.put(MovieContract.MovieEntry.COLUMN_ID, movieId);
+                    movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, movieTitle);
+                    movieValues.put(MovieContract.MovieEntry.COLUMN_DATE, movieDate);
+                    movieValues.put(MovieContract.MovieEntry.COLUMN_RATING, movieRate);
+                    movieValues.put(MovieContract.MovieEntry.COLUMN_DESCRIPTION, movieDescription);
+                    movieValues.put(MovieContract.MovieEntry.COLUMN_IMAGE, url);
+
+                    getContext().getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, movieValues);
+
+                    Log.v("DATABASE", "Insert complete");
+                }else {
+                    getContext().getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI, "movie_id=?", new String[]{String.valueOf(movieId)});
+                    Log.v("DATABASE", "Delete complete");
+                }
+                }});
 
 
-    }
+
+
+        }
     }
 
     @Override

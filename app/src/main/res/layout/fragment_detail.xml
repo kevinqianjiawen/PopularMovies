@@ -1,7 +1,10 @@
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.android.popularmovies.DetailActivity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.android.popularmovies.DetailActivity">
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id ="@+id/favorite_detail">
@@ -50,11 +53,6 @@
 
             android:textSize="30sp"/>
 
-        <CheckBox android:id="@+id/star"
-            style="?android:attr/starStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
 
 
     </LinearLayout>
@@ -69,5 +67,19 @@
         android:layout_marginTop="30dp"
         />
 
+
 </RelativeLayout>
 </ScrollView>
+    <com.example.android.popularmovies.FloatingActionButton
+        android:id="@+id/action_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:elevation="6dp"
+        android:layout_margin="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        app:backgroundTint="@color/floating_action_button"
+        android:src="@drawable/button"
+        />
+
+</RelativeLayout>
