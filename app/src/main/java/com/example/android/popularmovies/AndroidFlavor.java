@@ -110,6 +110,11 @@ public class AndroidFlavor implements Parcelable{
         String name;
         String key;
 
+        video(String name, String key){
+            this.name = name;
+            this.key = key;
+        }
+
         video(Parcel in){
             this.name = in.readString();
             this.key = in.readString();
@@ -148,6 +153,11 @@ public class AndroidFlavor implements Parcelable{
     static class review implements  Parcelable{
         String author;
         String content;
+
+        review(String author, String content){
+            this.author = author;
+            this.content = content;
+        }
 
         review(Parcel in){
             this.author = in.readString();

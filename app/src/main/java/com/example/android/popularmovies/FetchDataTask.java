@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by kevin on 8/6/2016.
@@ -33,9 +34,10 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
     private final Context mContext;
 
 
+
     public FetchDataTask(Context context, AndroidFlavorAdapter mflavorAdapter) {
         mContext = context;
-       flavorAdapter = mflavorAdapter;
+        flavorAdapter = mflavorAdapter;
     }
 
     protected ArrayList<AndroidFlavor> doInBackground(String... params) {
@@ -45,7 +47,6 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
 
         //store the Json string from the internet
         String movieJsonStr = null;
-
 
 
         try {
@@ -124,7 +125,7 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
 
     private ArrayList<AndroidFlavor> getData(String movieData) throws JSONException {
         final String DATA_RESULT = "results";
-        final String DATA_ID ="id";
+        final String DATA_ID = "id";
         final String DATA_TITLE = "title";
         final String DATA_DATE = "release_date";
         final String DATA_RATE = "vote_average";
@@ -166,11 +167,13 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
             //get image link
             posterPath = movie.getString(DATA_POSTER);
 
+            List<AndroidFlavor.video> videoList = FetchVideoData(Integer.toString(id));
+            List<AndroidFlavor.review> reviewList = FetchReviewData(Integer.toString(id));
 
 
 
 
-            result.add(new AndroidFlavor(id, title, release, rate, overview, posterPath));
+            result.add(new AndroidFlavor(id, title, release, rate, overview, posterPath, videoList, reviewList));
 
         }
         for (AndroidFlavor a : result) {
@@ -180,10 +183,10 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
     }
 
 
-    //get video and review data
-    public ArrayList<String> FetchSpecificData(String id, String type){
+    //get video data
+    public List<AndroidFlavor.video> FetchVideoData(String id) {
         //get the data from the internet
-        for (int j = 0 ; j<2; j++){
+        for (int j = 0; j < 2; j++) {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
@@ -195,7 +198,7 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
                 String baseUrl = "https://api.themoviedb.org/3/movie/";
                 String API_PARAM = "api_key";
 
-                Uri uri = Uri.parse(baseUrl).parse(id + "/").buildUpon().appendPath(type)
+                Uri uri = Uri.parse(baseUrl).parse(id + "/").buildUpon().appendPath("videos")
                         .appendQueryParameter(API_PARAM, BuildConfig.POPULAR_MOVIES_API_KEY)
                         .build();
 
@@ -244,6 +247,8 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
             }
 
             try {
+                    return getVideoData(movieJsonStr);
+
                 //return getData(movieJsonStr);
             } catch (JSONException e) {
                 Log.e("Popular Movie", e.getMessage(), e);
@@ -253,20 +258,92 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
         return null;
     }
 
-    private ArrayList<String> getVideoData(String movieData) throws JSONException{
+    //get video data
+    public List<AndroidFlavor.review> FetchReviewData(String id) {
+        //get the data from the internet
+        for (int j = 0; j < 2; j++) {
+            HttpURLConnection urlConnection = null;
+            BufferedReader reader = null;
+
+            //store the Json string from the internet
+            String movieJsonStr = null;
+
+
+            try {
+                String baseUrl = "https://api.themoviedb.org/3/movie/";
+                String API_PARAM = "api_key";
+
+                Uri uri = Uri.parse(baseUrl).parse(id + "/").buildUpon().appendPath("reviews")
+                        .appendQueryParameter(API_PARAM, BuildConfig.POPULAR_MOVIES_API_KEY)
+                        .build();
+
+                URL url = new URL(uri.toString());
+
+                Log.v("Popular movie", uri.toString());
+
+                //Create a request to the moviedb, open the connection
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                //read data
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line + "\n");
+                }
+
+                if (buffer.length() == 0) {
+                    return null;
+                }
+
+                movieJsonStr = buffer.toString();
+                Log.v("MovieFragment", movieJsonStr);
+            } catch (IOException e) {
+                return null;
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("MovieFragment", "Error closing stream", e);
+                    }
+                }
+            }
+
+            try {
+                return getReviewData(movieJsonStr);
+
+                //return getData(movieJsonStr);
+            } catch (JSONException e) {
+                Log.e("Popular Movie", e.getMessage(), e);
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    private ArrayList<AndroidFlavor.video> getVideoData(String movieData) throws JSONException {
         final String DATA_RESULT = "results";
-        final String DATA_ID ="id";
         final String DATA_KEY = "key";
         final String DATA_NAME = "name";
 
         JSONObject movieJSON = new JSONObject(movieData);
         JSONArray movieArray = movieJSON.getJSONArray(DATA_RESULT);
 
-        ArrayList<String> result = new ArrayList<>();
+        ArrayList<AndroidFlavor.video> result = new ArrayList<>();
 
 
-
-        int id;
         String video;
         String name;
 
@@ -274,15 +351,47 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
             //get the json object
             JSONObject movieVideo = movieArray.getJSONObject(i);
 
-            id = movieVideo.getInt(DATA_ID);
+            name = movieVideo.getString(DATA_NAME);
 
             video = movieVideo.getString(DATA_KEY);
 
-            name = movieVideo.getString(DATA_NAME);
 
-            result.add();
+            result.add(new AndroidFlavor.video(name, video));
+        }
+        return result;
+
+    }
+
+    private ArrayList<AndroidFlavor.review> getReviewData(String movieData) throws JSONException {
+        final String DATA_RESULT = "results";
+        final String DATA_AUTHOR = "author";
+        final String DATA_CONTENT = "content";
+
+        JSONObject movieJSON = new JSONObject(movieData);
+        JSONArray movieArray = movieJSON.getJSONArray(DATA_RESULT);
+
+        ArrayList<AndroidFlavor.review> result = new ArrayList<>();
+
+
+        String author;
+        String content;
+
+        for (int i = 0; i < movieArray.length(); i++) {
+            //get the json object
+            JSONObject movieVideo = movieArray.getJSONObject(i);
+
+            author = movieVideo.getString(DATA_AUTHOR);
+
+            content = movieVideo.getString(DATA_CONTENT);
+
+
+            result.add(new AndroidFlavor.review(author, content));
         }
 
-        }
+        return result;
+
+    }
+
+
 
 }
