@@ -109,21 +109,25 @@ public class AndroidFlavor implements Parcelable{
     static class video implements  Parcelable{
         String name;
         String key;
+        String type;
 
-        video(String name, String key){
+        video(String name, String key,String type){
             this.name = name;
             this.key = key;
+            this.type = type;
         }
 
         video(Parcel in){
             this.name = in.readString();
             this.key = in.readString();
+            this.type = in.readString();
         }
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(name);
             dest.writeString(key);
+            dest.writeString(type);
         }
         static final Parcelable.Creator<video> CREATOR = new Parcelable.Creator<video>(){
             public video createFromParcel(Parcel in){
@@ -146,6 +150,10 @@ public class AndroidFlavor implements Parcelable{
 
         public String getKey(){
             return key;
+        }
+
+        public String getType(){
+            return type;
         }
     }
 

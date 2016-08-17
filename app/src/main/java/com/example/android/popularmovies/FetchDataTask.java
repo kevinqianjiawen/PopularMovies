@@ -186,7 +186,7 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
     //get video data
     public List<AndroidFlavor.video> FetchVideoData(String id) {
         //get the data from the internet
-        for (int j = 0; j < 2; j++) {
+
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
@@ -195,10 +195,10 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
 
 
             try {
-                String baseUrl = "https://api.themoviedb.org/3/movie/";
+                String baseUrl = "https://api.themoviedb.org/3/movie/"+ id + "/";
                 String API_PARAM = "api_key";
 
-                Uri uri = Uri.parse(baseUrl).parse(id + "/").buildUpon().appendPath("videos")
+                Uri uri = Uri.parse(baseUrl).buildUpon().appendPath("videos")
                         .appendQueryParameter(API_PARAM, BuildConfig.POPULAR_MOVIES_API_KEY)
                         .build();
 
@@ -254,14 +254,13 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
                 Log.e("Popular Movie", e.getMessage(), e);
                 e.printStackTrace();
             }
-        }
+
         return null;
     }
 
     //get video data
     public List<AndroidFlavor.review> FetchReviewData(String id) {
         //get the data from the internet
-        for (int j = 0; j < 2; j++) {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
@@ -270,10 +269,10 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
 
 
             try {
-                String baseUrl = "https://api.themoviedb.org/3/movie/";
+                String baseUrl = "https://api.themoviedb.org/3/movie/" + id + "/";
                 String API_PARAM = "api_key";
 
-                Uri uri = Uri.parse(baseUrl).parse(id + "/").buildUpon().appendPath("reviews")
+                Uri uri = Uri.parse(baseUrl).buildUpon().appendPath("reviews")
                         .appendQueryParameter(API_PARAM, BuildConfig.POPULAR_MOVIES_API_KEY)
                         .build();
 
@@ -329,7 +328,7 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
                 Log.e("Popular Movie", e.getMessage(), e);
                 e.printStackTrace();
             }
-        }
+
         return null;
     }
 
@@ -337,6 +336,7 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
         final String DATA_RESULT = "results";
         final String DATA_KEY = "key";
         final String DATA_NAME = "name";
+        final String DATA_TYPE ="type";
 
         JSONObject movieJSON = new JSONObject(movieData);
         JSONArray movieArray = movieJSON.getJSONArray(DATA_RESULT);
@@ -346,6 +346,7 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
 
         String video;
         String name;
+        String type;
 
         for (int i = 0; i < movieArray.length(); i++) {
             //get the json object
@@ -355,8 +356,10 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
 
             video = movieVideo.getString(DATA_KEY);
 
+            type = movieVideo.getString(DATA_TYPE);
 
-            result.add(new AndroidFlavor.video(name, video));
+
+            result.add(new AndroidFlavor.video(name, video, type));
         }
         return result;
 
