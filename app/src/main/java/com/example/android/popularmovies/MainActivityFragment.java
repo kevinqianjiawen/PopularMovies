@@ -15,6 +15,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -151,6 +153,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             //set the gridview as favorite
             rootView = inflater.inflate(R.layout.fragment_main,container,false);
 
+            final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.main_bar);
+            ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+
             gridViewFavorite = (GridView) rootView.findViewById(R.id.gridview_poster);
 
             favoriteAdapter = new movieAdapter(getActivity(), null, 0);
@@ -176,6 +181,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         }else {
             rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.main_bar);
+            ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
             //inflate menu
             List<AndroidFlavor> movieList = new ArrayList<AndroidFlavor>();

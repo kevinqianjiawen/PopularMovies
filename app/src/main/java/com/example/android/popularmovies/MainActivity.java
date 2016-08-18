@@ -19,7 +19,7 @@ import android.widget.ImageView;
 
 import com.facebook.stetho.Stetho;
 
-public class MainActivity extends ActionBarActivity implements MainActivityFragment.Callback{
+public class MainActivity extends AppCompatActivity implements MainActivityFragment.Callback{
     private boolean mTwoPane;
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
 

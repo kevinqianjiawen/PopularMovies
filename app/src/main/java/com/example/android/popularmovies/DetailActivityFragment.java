@@ -1,12 +1,15 @@
 package com.example.android.popularmovies;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +22,9 @@ import android.widget.TextView;
 import com.example.android.popularmovies.data.MovieContract;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by kevin on 8/12/2016.
  */
@@ -30,25 +36,6 @@ public class DetailActivityFragment extends Fragment{
     static final String DETAIL = "DETAIL";
     private AndroidFlavor movie;
 
-    private static final String[] FAVORTIE_COLUMNS = {
-            MovieContract.MovieEntry._ID,
-            MovieContract.MovieEntry.COLUMN_ID,
-            MovieContract.MovieEntry.COLUMN_TITLE,
-            MovieContract.MovieEntry.COLUMN_DATE,
-            MovieContract.MovieEntry.COLUMN_RATING,
-            MovieContract.MovieEntry.COLUMN_DESCRIPTION,
-            MovieContract.MovieEntry.COLUMN_IMAGE
-    };
-
-    // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
-    // must change.
-    static final int COL_ID = 0;
-    static final int COL_MOVIE_ID = 1;
-    static final int COL_MOVIE_TITLE = 2;
-    static final int COL_MOVIE_DATE = 3;
-    static final int COL_MOVIE_RATING = 4;
-    static final int COL_MOVIE_DESCRIPTION = 5;
-    static final int COL_MOVIE_IMAGE = 6;
 
 
     public DetailActivityFragment() {
@@ -60,6 +47,12 @@ public class DetailActivityFragment extends Fragment{
 
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+
+        final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.moviebar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         Intent intent = getActivity().getIntent();
 
         Bundle arguments = getArguments();
@@ -72,6 +65,7 @@ public class DetailActivityFragment extends Fragment{
                 movie = (AndroidFlavor) intent.getParcelableExtra("movie");
                 //Log.v("bad", movie.toString());
             }
+
 
             final int idText = movie.getid();
 
@@ -96,6 +90,23 @@ public class DetailActivityFragment extends Fragment{
             //Log.v("pop", url);
             ImageView iconView = (ImageView) rootView.findViewById(R.id.detail_image);
             Picasso.with(getActivity()).load(url).into(iconView);
+
+            int[] imagePreview = new int[] {R.id.preview, R.id.preview2, R.id.preview3};
+
+            int size = movie.getVideoList().size();
+            if(size >3){
+                size = 3;
+            }
+            for(int i = 0; i < size; i++) {
+
+                clickTrailer(movie, imagePreview[i], i, rootView);
+
+            }
+
+
+
+
+
 
             //a star check box, if the user click it, the favorite will add to the database;
             final com.example.android.popularmovies.FloatingActionButton checkBox = (com.example.android.popularmovies.FloatingActionButton) rootView.findViewById(R.id.action_button);
@@ -134,6 +145,28 @@ public class DetailActivityFragment extends Fragment{
 
         return rootView;
     }
+
+    public void clickTrailer(AndroidFlavor movie, int id, int num, View root){
+
+        final String previewKey = movie.getVideoList().get(num).getKey();
+        final String urlPreview = "http://img.youtube.com/vi/"+ previewKey + "/0.jpg";
+        ImageView previewView = (ImageView) root.findViewById(id);
+        Picasso.with(getContext()).load(urlPreview).into(previewView);
+
+        previewView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + previewKey));
+                if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+                    getContext().startActivity(intent);
+                }
+            }
+        });
+
+    }
+
+
 
 
 }

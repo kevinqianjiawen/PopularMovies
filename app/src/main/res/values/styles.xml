@@ -20,24 +20,23 @@
 <!--</resources>-->
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="android:colorPrimary">@color/colorPrimary</item>
-        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+
+    <style name="Theme.Design" parent="Base.Theme.Design">
     </style>
 
-    <!-- Main activity theme. -->
-    <style name="MovieTheme" parent="AppTheme">
-        <item name="actionBarStyle">@style/ActionBar.Solid.Movie.NoTitle</item>
+    <style name="Base.Theme.Design" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#424242</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="colorAccent">#FF4081</item>
     </style>
 
-    <style name="ActionBar.Solid.Movie.NoTitle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-                <item name="displayOptions">useLogo|showHome</item>
-                <item name="logo">@drawable/ic_luncher</item>
-            </style>
-
-
+    <style name="Widget.CardContent" parent="android:Widget">
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:paddingBottom">24dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
 
 
 </resources>

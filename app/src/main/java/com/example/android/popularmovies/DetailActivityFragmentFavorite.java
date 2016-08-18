@@ -14,6 +14,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,6 +79,11 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
         }
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+
+        final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.moviebar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mPosterView = (ImageView)rootView.findViewById(R.id.detail_image);
         mTitleView = (TextView) rootView.findViewById(R.id.detail_title);

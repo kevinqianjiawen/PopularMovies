@@ -64,10 +64,20 @@ public class AndroidFlavor implements Parcelable{
         return image;
     }
 
+    public List<video> getVideoList(){
+        return videoList;
+    }
+
+    public List<review> getReviewList(){
+        return reviewList;
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
+
+
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
@@ -106,7 +116,7 @@ public class AndroidFlavor implements Parcelable{
     }
 
     //a inside class for storing video data
-    static class video implements  Parcelable{
+    public static class video implements  Parcelable{
         String name;
         String key;
         String type;
@@ -158,7 +168,7 @@ public class AndroidFlavor implements Parcelable{
     }
 
     //store review data
-    static class review implements  Parcelable{
+    public static class review implements  Parcelable{
         String author;
         String content;
 

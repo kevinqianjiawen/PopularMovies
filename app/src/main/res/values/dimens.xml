@@ -5,4 +5,5 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="fab_press_translation_z">9dp</dimen>
+    <dimen name="preview_height">256dp</dimen>
 </resources>

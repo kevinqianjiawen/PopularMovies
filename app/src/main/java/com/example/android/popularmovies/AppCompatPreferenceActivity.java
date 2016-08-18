@@ -22,7 +22,7 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
 
-        getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         super.onCreate(savedInstanceState);
     }
