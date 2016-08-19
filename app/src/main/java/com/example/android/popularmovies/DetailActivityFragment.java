@@ -10,6 +10,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -104,14 +106,24 @@ public class DetailActivityFragment extends Fragment{
 
             }
 
-            TextView test = (TextView) rootView.findViewById(R.id.author);
-            final String auother = movie.getReviewList().get(0).getAuthor();
-            test.setText(auother);
+//            TextView test = (TextView) rootView.findViewById(R.id.author);
+//            final String auother = movie.getReviewList().get(0).getAuthor();
+//            test.setText(auother);
+//
+//
+//            TextView test2 = (TextView) rootView.findViewById(R.id.review);
+//            final String content = movie.getReviewList().get(0).getContent().substring(0, 100);
+//            test2.setText(content);
+
+            RecyclerView reviewList = (RecyclerView) rootView.findViewById(R.id.recyclerview);
+            reviewList.setHasFixedSize(true);
+            LinearLayoutManager llm = new LinearLayoutManager(getContext());
+            reviewList.setLayoutManager(llm);
+            reviewList.setAdapter(new ReviewAdapter(movie.getReviewList()));
 
 
-            TextView test2 = (TextView) rootView.findViewById(R.id.review);
-            final String content = movie.getReviewList().get(0).getContent().substring(0, 100);
-            test2.setText(content);
+
+
 
 
 
