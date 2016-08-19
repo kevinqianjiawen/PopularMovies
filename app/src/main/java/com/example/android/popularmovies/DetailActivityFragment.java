@@ -94,17 +94,27 @@ public class DetailActivityFragment extends Fragment{
             ImageView iconView = (ImageView) rootView.findViewById(R.id.detail_image);
             Picasso.with(getActivity()).load(url).into(iconView);
 
-            int[] imagePreview = new int[] {R.id.preview, R.id.preview2, R.id.preview3};
+            final String previewKey = movie.getVideoList().get(0).getKey();
+            ImageView topPreview = (ImageView) rootView.findViewById(R.id.preview);
+            final String urlPreview = "http://img.youtube.com/vi/"+ previewKey + "/0.jpg";
+            Picasso.with(getContext()).load(urlPreview).into(topPreview);
 
-            int size = movie.getVideoList().size();
-            if(size >3){
-                size = 3;
-            }
-            for(int i = 0; i < size; i++) {
+            topPreview.setOnClickListener(new View.OnClickListener() {
 
-                clickTrailer(movie, imagePreview[i], i, rootView);
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + previewKey));
+                    if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+                        getContext().startActivity(intent);
+                    }
+                }
+            });
 
-            }
+            RecyclerView videoList = (RecyclerView) rootView.findViewById(R.id.recyclerview_video);
+            videoList.setHasFixedSize(true);
+            LinearLayoutManager llm = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+            videoList.setLayoutManager(llm);
+            videoList.setAdapter(new VideoAdapter(movie.getVideoList()));
 
 //            TextView test = (TextView) rootView.findViewById(R.id.author);
 //            final String auother = movie.getReviewList().get(0).getAuthor();
@@ -115,10 +125,10 @@ public class DetailActivityFragment extends Fragment{
 //            final String content = movie.getReviewList().get(0).getContent().substring(0, 100);
 //            test2.setText(content);
 
-            RecyclerView reviewList = (RecyclerView) rootView.findViewById(R.id.recyclerview);
+            RecyclerView reviewList = (RecyclerView) rootView.findViewById(R.id.recyclerview_review);
             reviewList.setHasFixedSize(true);
-            LinearLayoutManager llm = new LinearLayoutManager(getContext());
-            reviewList.setLayoutManager(llm);
+            LinearLayoutManager llm2 = new LinearLayoutManager(getContext());
+            reviewList.setLayoutManager(llm2);
             reviewList.setAdapter(new ReviewAdapter(movie.getReviewList()));
 
 
@@ -168,26 +178,6 @@ public class DetailActivityFragment extends Fragment{
 
 
         return rootView;
-    }
-
-    public void clickTrailer(AndroidFlavor movie, int id, int num, View root){
-
-        final String previewKey = movie.getVideoList().get(num).getKey();
-        final String urlPreview = "http://img.youtube.com/vi/"+ previewKey + "/0.jpg";
-        ImageView previewView = (ImageView) root.findViewById(id);
-        Picasso.with(getContext()).load(urlPreview).into(previewView);
-
-        previewView.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + previewKey));
-                if (intent.resolveActivity(getContext().getPackageManager()) != null) {
-                    getContext().startActivity(intent);
-                }
-            }
-        });
-
     }
 
 
