@@ -39,4 +39,26 @@ public class MovieContract{
         		return ContentUris.withAppendedId(CONTENT_URI, id);
 		}
 	}
+	//define the table content of video of movie
+	public static final class VideoEntry implements BaseColumns{
+
+		//table name
+		public static final String TABLE_NAME = "video";
+		//columns
+		public static final String COLUMN_NAME = "name";
+		public static final String COLUMN_KEY = "key";
+		public static final String COLUMN_TYPE = "type";
+
+	}
+
+	//define the table content of video of movie
+	public static final class ReviewEntry implements BaseColumns{
+
+		//table name
+		public static final String TABLE_NAME = "review";
+		//columns
+		public static final String COLUMN_AUTHOR = "author";
+		public static final String COLUMN_REVIEW = "review";
+
+	}
 }

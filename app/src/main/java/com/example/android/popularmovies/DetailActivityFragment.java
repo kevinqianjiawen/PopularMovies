@@ -1,15 +1,11 @@
 package com.example.android.popularmovies;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -17,16 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.popularmovies.data.MovieContract;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by kevin on 8/12/2016.
@@ -94,8 +85,10 @@ public class DetailActivityFragment extends Fragment{
             ImageView iconView = (ImageView) rootView.findViewById(R.id.detail_image);
             Picasso.with(getActivity()).load(url).into(iconView);
 
-            final String previewKey = movie.getVideoList().get(0).getKey();
             ImageView topPreview = (ImageView) rootView.findViewById(R.id.preview);
+            try{
+            final String previewKey = movie.getVideoList().get(0).getKey();
+
             final String urlPreview = "http://img.youtube.com/vi/"+ previewKey + "/0.jpg";
             Picasso.with(getContext()).load(urlPreview).into(topPreview);
 
@@ -108,7 +101,9 @@ public class DetailActivityFragment extends Fragment{
                         getContext().startActivity(intent);
                     }
                 }
-            });
+            });}catch (IndexOutOfBoundsException iobe){
+                topPreview.setImageResource(R.drawable.novideo);
+            }
 
             RecyclerView videoList = (RecyclerView) rootView.findViewById(R.id.recyclerview_video);
             videoList.setHasFixedSize(true);

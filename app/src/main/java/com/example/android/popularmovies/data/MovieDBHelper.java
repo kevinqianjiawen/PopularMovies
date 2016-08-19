@@ -10,7 +10,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 
 	//name & version
 	private static final String DATABASE_NAME = "movie.db";
-	private static final int DATABASE_VERSION = 7;
+	private static final int DATABASE_VERSION = 9;
 
 	public MovieDBHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,7 +34,30 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 				" TEXT NOT NULL"
 				+");";
 
+		final String SQL_CREATE_VIDEO_TABLE = "CREATE TABLE " +
+				MovieContract.VideoEntry.TABLE_NAME + "(" + MovieContract.VideoEntry._ID +
+				" INTEGER PRIMARY KEY AUTOINCREMENT, " +
+				MovieContract.VideoEntry.COLUMN_NAME + " Text NOT NULL, " +
+				MovieContract.VideoEntry.COLUMN_KEY + " TEXT NOT NULL, " +
+				MovieContract.VideoEntry.COLUMN_TYPE + " TEXT NOT NULL, " +
+				" FOREIGN KEY (" + MovieContract.MovieEntry._ID + ") REFERENCES " +
+				MovieContract.VideoEntry.TABLE_NAME + " (" + MovieContract.VideoEntry._ID + ")"
+
+				+");";
+
+        final String SQL_CREATE_REVIEW_TABLE = "CREATE TABLE " +
+                MovieContract.ReviewEntry.TABLE_NAME + "(" + MovieContract.ReviewEntry._ID +
+                " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                MovieContract.ReviewEntry.COLUMN_AUTHOR + " Text NOT NULL, " +
+                MovieContract.ReviewEntry.COLUMN_REVIEW + " TEXT NOT NULL, " +
+                " FOREIGN KEY (" + MovieContract.MovieEntry._ID + ") REFERENCES " +
+                MovieContract.ReviewEntry.TABLE_NAME + " (" + MovieContract.ReviewEntry._ID + ")"
+
+                +");";
+
 		sqLiteDatabase.execSQL(SQL_CREATE_MOVIE_TABLE);
+		sqLiteDatabase.execSQL(SQL_CREATE_VIDEO_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_REVIEW_TABLE);
 	}
 
 	// Upgrade database when version is changed.
@@ -44,6 +67,9 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 				newVersion + ". OLD DATA WILL BE DESTROYED");
 		// Drop the table
 		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MovieContract.MovieEntry.TABLE_NAME);
+		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MovieContract.VideoEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MovieContract.ReviewEntry.TABLE_NAME);
+
 
 
 		// re-create database
