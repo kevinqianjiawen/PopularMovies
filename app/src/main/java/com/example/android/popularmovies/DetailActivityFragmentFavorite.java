@@ -15,6 +15,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +30,9 @@ import com.example.android.popularmovies.data.MovieContract;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -46,7 +51,11 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
             MovieContract.MovieEntry.COLUMN_RATING,
             MovieContract.MovieEntry.COLUMN_DESCRIPTION,
             MovieContract.MovieEntry.COLUMN_IMAGE,
-            MovieContract.VideoEntry.COLUMN_KEY
+            MovieContract.VideoEntry.COLUMN_KEY,
+            MovieContract.VideoEntry.COLUMN_TYPE,
+            MovieContract.VideoEntry.COLUMN_NAME,
+            MovieContract.ReviewEntry.COLUMN_AUTHOR,
+            MovieContract.ReviewEntry.COLUMN_REVIEW
     };
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
@@ -58,6 +67,11 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
     static final int COL_MOVIE_DESCRIPTION = 4;
     static final int COL_MOVIE_IMAGE = 5;
     static final int COL_VIDEO_KEY = 6;
+    static final int COL_VIDEO_TYPE = 7;
+    static final int COL_VIDEO_NAME = 8;
+    static final int COL_REVIEW_AUTHOR =9;
+    static final int COL_REVIEW_CONTENT = 10;
+
 
     private TextView mTitleView;
     private ImageView mPosterView;
@@ -68,6 +82,8 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
     private com.example.android.popularmovies.FloatingActionButton mButtonView;
 
     private ImageView mTopPreview;
+    private RecyclerView videoList;
+    private RecyclerView reviewList;
 
 
     public DetailActivityFragmentFavorite() {
@@ -96,6 +112,9 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
         mButtonView = (com.example.android.popularmovies.FloatingActionButton) rootView.findViewById(R.id.action_button);
 
         mTopPreview = (ImageView) rootView.findViewById(R.id.preview);
+        videoList = (RecyclerView) rootView.findViewById(R.id.recyclerview_video);
+        reviewList = (RecyclerView) rootView.findViewById(R.id.recyclerview_review);
+
 
         return rootView;
     }
@@ -191,6 +210,29 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
             }
 
         }
+
+        //try to get the data from data base and set recycleview;
+
+        List<AndroidFlavor.video> videoFromData = new ArrayList<>();
+        List<AndroidFlavor.review> reviewFromData = new ArrayList<>();
+
+        for (int i = 0; i < data.getCount()-1; i++){
+            data.moveToNext();
+            videoFromData.add(new AndroidFlavor.video(data.getString(COL_VIDEO_NAME), data.getString(COL_VIDEO_KEY), data.getString(COL_VIDEO_TYPE)));
+            reviewFromData.add(new AndroidFlavor.review(data.getString(COL_REVIEW_AUTHOR), data.getString(COL_REVIEW_CONTENT)));
+
+        }
+
+
+        videoList.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        videoList.setLayoutManager(llm);
+        videoList.setAdapter(new VideoAdapter(videoFromData));
+
+        reviewList.setHasFixedSize(true);
+        LinearLayoutManager llm2 = new LinearLayoutManager(getContext());
+        reviewList.setLayoutManager(llm2);
+        reviewList.setAdapter(new ReviewAdapter(reviewFromData));
     }
 
     @Override
