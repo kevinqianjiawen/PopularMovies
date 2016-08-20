@@ -4,6 +4,8 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import java.text.DecimalFormat;
+
 public class MovieContract{
 
 	public static final String CONTENT_AUTHORITY = "com.example.android.popularmovies";
@@ -39,8 +41,8 @@ public class MovieContract{
         		return ContentUris.withAppendedId(CONTENT_URI, id);
 		}
 
-		public static Uri buildReviewOrVideo(String type, long id){
-			return CONTENT_URI.buildUpon().appendPath(type).appendPath(Double.toString(id)).build();
+		public static Uri buildReviewVideo(int id){
+			return CONTENT_URI.buildUpon().appendPath("video").appendPath("review").appendPath(Integer.toString(id)).build();
 		}
 
 	}

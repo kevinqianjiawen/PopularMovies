@@ -90,9 +90,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             startActivity(intent);
         }
     }
-    @Override
-
     //for the two pane favortie fragment
+    @Override
     public void onItemSelected(Uri contentUri){
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by

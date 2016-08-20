@@ -40,31 +40,34 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
     private Uri mUri;
 
     private static final String[] FAVORTIE_COLUMNS = {
-            MovieContract.MovieEntry._ID,
             MovieContract.MovieEntry.COLUMN_ID,
             MovieContract.MovieEntry.COLUMN_TITLE,
             MovieContract.MovieEntry.COLUMN_DATE,
             MovieContract.MovieEntry.COLUMN_RATING,
             MovieContract.MovieEntry.COLUMN_DESCRIPTION,
-            MovieContract.MovieEntry.COLUMN_IMAGE
+            MovieContract.MovieEntry.COLUMN_IMAGE,
+            MovieContract.VideoEntry.COLUMN_KEY
     };
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
     // must change.
-    static final int COL_ID = 0;
-    static final int COL_MOVIE_ID = 1;
-    static final int COL_MOVIE_TITLE = 2;
-    static final int COL_MOVIE_DATE = 3;
-    static final int COL_MOVIE_RATING = 4;
-    static final int COL_MOVIE_DESCRIPTION = 5;
-    static final int COL_MOVIE_IMAGE = 6;
+    static final int COL_MOVIE_ID = 0;
+    static final int COL_MOVIE_TITLE = 1;
+    static final int COL_MOVIE_DATE = 2;
+    static final int COL_MOVIE_RATING = 3;
+    static final int COL_MOVIE_DESCRIPTION = 4;
+    static final int COL_MOVIE_IMAGE = 5;
+    static final int COL_VIDEO_KEY = 6;
 
     private TextView mTitleView;
     private ImageView mPosterView;
     private TextView mDateView;
     private TextView mRateView;
     private TextView mDescriptionView;
+
     private com.example.android.popularmovies.FloatingActionButton mButtonView;
+
+    private ImageView mTopPreview;
 
 
     public DetailActivityFragmentFavorite() {
@@ -91,6 +94,8 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
         mRateView = (TextView) rootView.findViewById(R.id.detail_rate);
         mDescriptionView = (TextView) rootView.findViewById(R.id.detail_overview);
         mButtonView = (com.example.android.popularmovies.FloatingActionButton) rootView.findViewById(R.id.action_button);
+
+        mTopPreview = (ImageView) rootView.findViewById(R.id.preview);
 
         return rootView;
     }
@@ -166,7 +171,24 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
                 }});
 
 
+            try{
+                final String previewKey = data.getString(COL_VIDEO_KEY);
 
+                final String urlPreview = "http://img.youtube.com/vi/"+ previewKey + "/0.jpg";
+                Picasso.with(getContext()).load(urlPreview).into(mTopPreview);
+
+                mTopPreview.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + previewKey));
+                        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+                            getContext().startActivity(intent);
+                        }
+                    }
+                });}catch (IndexOutOfBoundsException iobe){
+                mTopPreview.setImageResource(R.drawable.novideo);
+            }
 
         }
     }

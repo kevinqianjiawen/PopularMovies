@@ -60,13 +60,18 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     private static final String[] FAVORTIE_COLUMNS = {
             MovieContract.MovieEntry._ID,
-            MovieContract.MovieEntry.COLUMN_IMAGE
+
+            MovieContract.MovieEntry.COLUMN_IMAGE,
+
+            MovieContract.MovieEntry.COLUMN_ID,
     };
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
     // must change.
     static final int COL_ID = 0;
     static final int COL_MOVIE_IMAGE = 1;
+
+    static final int COL_MOVIE_ID =2;
 
     /**
           * A callback interface that all activities containing this fragment must
@@ -170,7 +175,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                     if (cursor != null) {
                         //Intent intent = new Intent(getActivity(), DetailActivity.class).setData(MovieContract.MovieEntry.CONTENT_URI);
                         //startActivity(intent);
-                        ((Callback) getActivity()).onItemSelected(MovieContract.MovieEntry.buildMovieUri(cursor.getInt(COL_ID)));
+                        ((Callback) getActivity()).onItemSelected(MovieContract.MovieEntry.buildReviewVideo(cursor.getInt(COL_MOVIE_ID)));
                     }
 
                 }
