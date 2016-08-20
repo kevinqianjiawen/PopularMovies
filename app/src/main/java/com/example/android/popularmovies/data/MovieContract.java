@@ -38,6 +38,11 @@ public class MovieContract{
 		public static Uri buildMovieUri(long id){
         		return ContentUris.withAppendedId(CONTENT_URI, id);
 		}
+
+		public static Uri buildReviewOrVideo(String type, long id){
+			return CONTENT_URI.buildUpon().appendPath(type).appendPath(Double.toString(id)).build();
+		}
+
 	}
 	//define the table content of video of movie
 	public static final class VideoEntry implements BaseColumns{
@@ -49,6 +54,21 @@ public class MovieContract{
 		public static final String COLUMN_KEY = "key";
 		public static final String COLUMN_TYPE = "type";
 
+		// create content uri
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+				.appendPath(TABLE_NAME).build();
+		// create cursor of base type directory for multiple entries
+		public static final String CONTENT_DIR_TYPE =
+				ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
+		// create cursor of base type item for single entry
+		public static final String CONTENT_ITEM_TYPE =
+				ContentResolver.CURSOR_ITEM_BASE_TYPE +"/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
+
+		// for building URIs on insertion
+		public static Uri buildVideoUri(long id){
+			return ContentUris.withAppendedId(CONTENT_URI, id);}
+
+
 	}
 
 	//define the table content of video of movie
@@ -59,6 +79,21 @@ public class MovieContract{
 		//columns
 		public static final String COLUMN_AUTHOR = "author";
 		public static final String COLUMN_REVIEW = "review";
+
+		// create content uri
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+				.appendPath(TABLE_NAME).build();
+		// create cursor of base type directory for multiple entries
+		public static final String CONTENT_DIR_TYPE =
+				ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
+		// create cursor of base type item for single entry
+		public static final String CONTENT_ITEM_TYPE =
+				ContentResolver.CURSOR_ITEM_BASE_TYPE +"/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
+
+		// for building URIs on insertion
+		public static Uri buildReviewUri(long id){
+			return ContentUris.withAppendedId(CONTENT_URI, id);}
+
 
 	}
 }
