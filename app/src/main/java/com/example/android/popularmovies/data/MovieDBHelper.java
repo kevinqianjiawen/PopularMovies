@@ -10,7 +10,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 
 	//name & version
 	private static final String DATABASE_NAME = "movie.db";
-	private static final int DATABASE_VERSION = 9;
+	private static final int DATABASE_VERSION = 12;
 
 	public MovieDBHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -40,8 +40,9 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 				MovieContract.VideoEntry.COLUMN_NAME + " Text NOT NULL, " +
 				MovieContract.VideoEntry.COLUMN_KEY + " TEXT NOT NULL, " +
 				MovieContract.VideoEntry.COLUMN_TYPE + " TEXT NOT NULL, " +
+				MovieContract.VideoEntry.COLUMN_MOVIE_ID + " INTEGER," +
 				" FOREIGN KEY (" + MovieContract.MovieEntry._ID + ") REFERENCES " +
-				MovieContract.VideoEntry.TABLE_NAME + " (" + MovieContract.VideoEntry._ID + ")"
+				MovieContract.VideoEntry.TABLE_NAME + " (" + MovieContract.VideoEntry.COLUMN_MOVIE_ID + ")"
 
 				+");";
 
@@ -50,8 +51,9 @@ public class MovieDBHelper extends SQLiteOpenHelper {
                 " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 MovieContract.ReviewEntry.COLUMN_AUTHOR + " Text NOT NULL, " +
                 MovieContract.ReviewEntry.COLUMN_REVIEW + " TEXT NOT NULL, " +
+				MovieContract.ReviewEntry.COLUMN_MOVIE_ID + " INTEGER," +
                 " FOREIGN KEY (" + MovieContract.MovieEntry._ID + ") REFERENCES " +
-                MovieContract.ReviewEntry.TABLE_NAME + " (" + MovieContract.ReviewEntry._ID + ")"
+                MovieContract.ReviewEntry.TABLE_NAME + " (" + MovieContract.ReviewEntry.COLUMN_MOVIE_ID + ")"
 
                 +");";
 

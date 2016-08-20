@@ -50,6 +50,7 @@ public class MovieContract{
 		//table name
 		public static final String TABLE_NAME = "video";
 		//columns
+		public static final String COLUMN_MOVIE_ID = "id";
 		public static final String COLUMN_NAME = "name";
 		public static final String COLUMN_KEY = "key";
 		public static final String COLUMN_TYPE = "type";
@@ -77,8 +78,9 @@ public class MovieContract{
 		//table name
 		public static final String TABLE_NAME = "review";
 		//columns
+		public static final String COLUMN_MOVIE_ID = "id";
 		public static final String COLUMN_AUTHOR = "author";
-		public static final String COLUMN_REVIEW = "review";
+		public static final String COLUMN_REVIEW = "content";
 
 		// create content uri
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()

@@ -19,6 +19,10 @@ import android.widget.TextView;
 import com.example.android.popularmovies.data.MovieContract;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+
 /**
  * Created by kevin on 8/12/2016.
  */
@@ -36,7 +40,7 @@ public class DetailActivityFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
 
@@ -120,7 +124,7 @@ public class DetailActivityFragment extends Fragment{
 //            final String content = movie.getReviewList().get(0).getContent().substring(0, 100);
 //            test2.setText(content);
 
-            RecyclerView reviewList = (RecyclerView) rootView.findViewById(R.id.recyclerview_review);
+            final RecyclerView reviewList = (RecyclerView) rootView.findViewById(R.id.recyclerview_review);
             reviewList.setHasFixedSize(true);
             LinearLayoutManager llm2 = new LinearLayoutManager(getContext());
             reviewList.setLayoutManager(llm2);
@@ -153,16 +157,26 @@ public class DetailActivityFragment extends Fragment{
                         movieValues.put(MovieContract.MovieEntry.COLUMN_DESCRIPTION, descriptionText);
                         movieValues.put(MovieContract.MovieEntry.COLUMN_IMAGE, url);
 
-                        int reviewSize = movie.getReviewList().size();
-                        ContentValues[] reviewValues = new ContentValues[reviewSize];
-                        for(int i = 0; i< reviewSize; i++){
-                            reviewValues[i].put(MovieContract.ReviewEntry.COLUMN_AUTHOR, movie.getReviewList().get(i).getAuthor());
-                            reviewValues[i].put(MovieContract.ReviewEntry.COLUMN_AUTHOR, movie.getReviewList().get(i).getContent());
+                        getContext().getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, movieValues);
 
+
+                        int reviewSize = movie.getReviewList().size();
+                        Vector<ContentValues> reviewValueList = new Vector<ContentValues>(reviewSize);
+
+                        for(int i = 0; i<reviewSize; i++) {
+                            ContentValues reviewValue = new ContentValues();
+                            reviewValue.put(MovieContract.ReviewEntry.COLUMN_AUTHOR,movie.getReviewList().get(i).getAuthor());
+                            reviewValue.put(MovieContract.ReviewEntry.COLUMN_REVIEW, movie.getReviewList().get(i).getContent());
+                            reviewValueList.add(reviewValue);
                         }
 
-                        getContext().getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, movieValues);
-                        getContext().getContentResolver().bulkInsert(MovieContract.ReviewEntry.CONTENT_URI, reviewValues);
+
+                        // add to database
+                        if ( reviewValueList.size() > 0 ) {
+                            ContentValues[] reviewArray = new ContentValues[reviewValueList.size()];
+                            reviewValueList.toArray(reviewArray);
+                            getContext().getContentResolver().bulkInsert(MovieContract.ReviewEntry.CONTENT_URI, reviewArray);
+                        }
 
                         Log.v("DATABASE", "Insert complete");
 

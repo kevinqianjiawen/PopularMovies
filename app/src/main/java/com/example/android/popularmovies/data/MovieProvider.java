@@ -54,9 +54,9 @@ public class MovieProvider extends ContentProvider{
 		// add a code for each type of URI you want
 		matcher.addURI(authority, MovieContract.MovieEntry.TABLE_NAME, MOVIE);
 		matcher.addURI(authority, MovieContract.MovieEntry.TABLE_NAME + "/#", MOVIE_WITH_ID);
-		matcher.addURI(authority, MovieContract.VideoEntry.TABLE_NAME + "/#", VIDEO);
+		matcher.addURI(authority, MovieContract.VideoEntry.TABLE_NAME , VIDEO);
 		matcher.addURI(authority, MovieContract.MovieEntry.TABLE_NAME +"/*/#", MOVIE_VIDEO_WITH__ID);
-		matcher.addURI(authority, MovieContract.ReviewEntry.TABLE_NAME + "/#", REVIEW);
+		matcher.addURI(authority, MovieContract.ReviewEntry.TABLE_NAME , REVIEW);
 		matcher.addURI(authority, MovieContract.MovieEntry.TABLE_NAME + "/*/#", MOVIE_REVIEW_WITH_ID);
 
 		return matcher;
