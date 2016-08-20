@@ -153,9 +153,19 @@ public class DetailActivityFragment extends Fragment{
                         movieValues.put(MovieContract.MovieEntry.COLUMN_DESCRIPTION, descriptionText);
                         movieValues.put(MovieContract.MovieEntry.COLUMN_IMAGE, url);
 
+                        int reviewSize = movie.getReviewList().size();
+                        ContentValues[] reviewValues = new ContentValues[reviewSize];
+                        for(int i = 0; i< reviewSize; i++){
+                            reviewValues[i].put(MovieContract.ReviewEntry.COLUMN_AUTHOR, movie.getReviewList().get(i).getAuthor());
+                            reviewValues[i].put(MovieContract.ReviewEntry.COLUMN_AUTHOR, movie.getReviewList().get(i).getContent());
+
+                        }
+
                         getContext().getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, movieValues);
+                        getContext().getContentResolver().bulkInsert(MovieContract.ReviewEntry.CONTENT_URI, reviewValues);
 
                         Log.v("DATABASE", "Insert complete");
+
 
 
 
