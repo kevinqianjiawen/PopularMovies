@@ -119,7 +119,7 @@ public class MovieProvider extends ContentProvider{
 				retCursor = mOpenHelper.getReadableDatabase().query(
 						MovieContract.MovieEntry.TABLE_NAME,
 						projection,
-						MovieContract.MovieEntry._ID + " = ?",
+						MovieContract.MovieEntry.COLUMN_ID + " = ?",
 						new String[] {String.valueOf(ContentUris.parseId(uri))},
 						null,
 						null,
@@ -151,7 +151,7 @@ public class MovieProvider extends ContentProvider{
 				retCursor = joinTable(MovieContract.MovieEntry.TABLE_NAME, MovieContract.ReviewEntry.TABLE_NAME, MovieContract.MovieEntry._ID, MovieContract.ReviewEntry._ID).query(
 						mOpenHelper.getReadableDatabase(),
 						projection,
-						MovieContract.ReviewEntry.TABLE_NAME+"."+ MovieContract.ReviewEntry._ID+" = ? ",
+						MovieContract.ReviewEntry.TABLE_NAME+"."+ MovieContract.ReviewEntry.COLUMN_MOVIE_ID+" = ? ",
 						new String[]{String.valueOf(ContentUris.parseId(uri))},
 						null,
 						null,
@@ -163,7 +163,7 @@ public class MovieProvider extends ContentProvider{
 				retCursor = joinTable(MovieContract.MovieEntry.TABLE_NAME, MovieContract.VideoEntry.TABLE_NAME, MovieContract.MovieEntry._ID, MovieContract.VideoEntry._ID).query(
 						mOpenHelper.getReadableDatabase(),
 						projection,
-						MovieContract.ReviewEntry.TABLE_NAME+"."+ MovieContract.VideoEntry._ID+" = ? ",
+						MovieContract.ReviewEntry.TABLE_NAME+"."+ MovieContract.VideoEntry.COLUMN_MOVIE_ID+" = ? ",
 						new String[]{String.valueOf(ContentUris.parseId(uri))},
 						null,
 						null,
@@ -242,7 +242,7 @@ public class MovieProvider extends ContentProvider{
 				break;
 			case MOVIE_WITH_ID:
 				numDeleted = db.delete(MovieContract.MovieEntry.TABLE_NAME,
-						MovieContract.MovieEntry._ID + " = ?",
+						MovieContract.MovieEntry.COLUMN_ID + " = ?",
 						new String[]{String.valueOf(ContentUris.parseId(uri))});
 				// reset _ID
 				db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" +
@@ -268,7 +268,7 @@ public class MovieProvider extends ContentProvider{
 
 			case MOVIE_REVIEW_WITH_ID:
 				numDeleted = db.delete(
-						MovieContract.ReviewEntry.TABLE_NAME, MovieContract.ReviewEntry._ID + "= ?", new String[]{String.valueOf(ContentUris.parseId(uri))});
+						MovieContract.ReviewEntry.TABLE_NAME, MovieContract.ReviewEntry.COLUMN_MOVIE_ID + "= ?", new String[]{String.valueOf(ContentUris.parseId(uri))});
 				// reset _ID
 				db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" +
 						MovieContract.ReviewEntry.TABLE_NAME + "'");
@@ -276,7 +276,7 @@ public class MovieProvider extends ContentProvider{
 
 			case MOVIE_VIDEO_WITH__ID:
 				numDeleted = db.delete(
-						MovieContract.VideoEntry.TABLE_NAME, MovieContract.VideoEntry._ID + "= ?", new String[]{String.valueOf(ContentUris.parseId(uri))});
+						MovieContract.VideoEntry.TABLE_NAME, MovieContract.VideoEntry.COLUMN_MOVIE_ID + "= ?", new String[]{String.valueOf(ContentUris.parseId(uri))});
 				// reset _ID
 				db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" +
 						MovieContract.VideoEntry.TABLE_NAME + "'");
@@ -439,7 +439,7 @@ public class MovieProvider extends ContentProvider{
 			case MOVIE_WITH_ID: {
 				numUpdated = db.update(MovieContract.MovieEntry.TABLE_NAME,
 						contentValues,
-						MovieContract.MovieEntry._ID + " = ?",
+						MovieContract.MovieEntry.COLUMN_ID+ " = ?",
 						new String[] {String.valueOf(ContentUris.parseId(uri))});
 				break;
 			}
@@ -463,7 +463,7 @@ public class MovieProvider extends ContentProvider{
 			case MOVIE_REVIEW_WITH_ID: {
 				numUpdated = db.update(MovieContract.ReviewEntry.TABLE_NAME,
 						contentValues,
-						MovieContract.ReviewEntry._ID + " = ?",
+						MovieContract.ReviewEntry.COLUMN_MOVIE_ID + " = ?",
 						new String[] {String.valueOf(ContentUris.parseId(uri))});
 				break;
 			}
@@ -471,7 +471,7 @@ public class MovieProvider extends ContentProvider{
 			case MOVIE_VIDEO_WITH__ID: {
 				numUpdated = db.update(MovieContract.VideoEntry.TABLE_NAME,
 						contentValues,
-						MovieContract.VideoEntry._ID + " = ?",
+						MovieContract.VideoEntry.COLUMN_MOVIE_ID + " = ?",
 						new String[] {String.valueOf(ContentUris.parseId(uri))});
 				break;
 			}

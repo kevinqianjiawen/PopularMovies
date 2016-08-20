@@ -159,6 +159,25 @@ public class DetailActivityFragment extends Fragment{
 
                         getContext().getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, movieValues);
 
+                        int videoSize = movie.getVideoList().size();
+                        Vector<ContentValues> videoValueList = new Vector<ContentValues>(videoSize);
+
+                        for(int i = 0; i<videoSize; i++) {
+                            ContentValues videoValue = new ContentValues();
+                            videoValue.put(MovieContract.VideoEntry.COLUMN_KEY,movie.getVideoList().get(i).getKey());
+                            videoValue.put(MovieContract.VideoEntry.COLUMN_NAME,movie.getVideoList().get(i).getName());
+                            videoValue.put(MovieContract.VideoEntry.COLUMN_TYPE,movie.getVideoList().get(i).getType());
+                            videoValue.put(MovieContract.VideoEntry.COLUMN_MOVIE_ID,idText);
+                            videoValueList.add(videoValue);
+                        }
+
+                        // add to database
+                        if ( videoValueList.size() > 0 ) {
+                            ContentValues[] videoArray = new ContentValues[videoValueList.size()];
+                            videoValueList.toArray(videoArray);
+                            getContext().getContentResolver().bulkInsert(MovieContract.VideoEntry.CONTENT_URI, videoArray);
+                        }
+
 
                         int reviewSize = movie.getReviewList().size();
                         Vector<ContentValues> reviewValueList = new Vector<ContentValues>(reviewSize);
@@ -167,6 +186,7 @@ public class DetailActivityFragment extends Fragment{
                             ContentValues reviewValue = new ContentValues();
                             reviewValue.put(MovieContract.ReviewEntry.COLUMN_AUTHOR,movie.getReviewList().get(i).getAuthor());
                             reviewValue.put(MovieContract.ReviewEntry.COLUMN_REVIEW, movie.getReviewList().get(i).getContent());
+                            reviewValue.put(MovieContract.ReviewEntry.COLUMN_MOVIE_ID,idText);
                             reviewValueList.add(reviewValue);
                         }
 
@@ -177,6 +197,8 @@ public class DetailActivityFragment extends Fragment{
                             reviewValueList.toArray(reviewArray);
                             getContext().getContentResolver().bulkInsert(MovieContract.ReviewEntry.CONTENT_URI, reviewArray);
                         }
+
+
 
                         Log.v("DATABASE", "Insert complete");
 
