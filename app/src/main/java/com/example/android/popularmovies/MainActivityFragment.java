@@ -175,7 +175,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                     if (cursor != null) {
                         //Intent intent = new Intent(getActivity(), DetailActivity.class).setData(MovieContract.MovieEntry.CONTENT_URI);
                         //startActivity(intent);
-                        ((Callback) getActivity()).onItemSelected(MovieContract.MovieEntry.buildReviewVideo(cursor.getInt(COL_MOVIE_ID)));
+                        ((Callback) getActivity()).onItemSelected(MovieContract.MovieEntry.buildMovieUri(cursor.getInt(COL_MOVIE_ID)));
                     }
 
                 }

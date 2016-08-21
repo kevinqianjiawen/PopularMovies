@@ -4,6 +4,7 @@ package com.example.android.popularmovies;
  * Created by kevin on 8/12/2016.
  */
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -44,6 +45,8 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
 
     static final String DETAIL_FAVORITE = "DetailFavortie";
     private static final int DETAIL_LOADER = 0;
+    private static final int REVIEW_LOADER = 1;
+    private static final int VIDEO_LOADER = 2;
     private Uri mUri;
 
     private static final String[] FAVORTIE_COLUMNS = {
@@ -53,11 +56,18 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
             MovieContract.MovieEntry.COLUMN_RATING,
             MovieContract.MovieEntry.COLUMN_DESCRIPTION,
             MovieContract.MovieEntry.COLUMN_IMAGE,
+
+
+    };
+    private static final String[] REVIEW_COLUMNS = {
+            MovieContract.ReviewEntry.COLUMN_AUTHOR,
+            MovieContract.ReviewEntry.COLUMN_REVIEW
+    };
+
+    private static final String[] VIDEO_COLUMNS = {
             MovieContract.VideoEntry.COLUMN_KEY,
             MovieContract.VideoEntry.COLUMN_TYPE,
             MovieContract.VideoEntry.COLUMN_NAME,
-            MovieContract.ReviewEntry.COLUMN_AUTHOR,
-            MovieContract.ReviewEntry.COLUMN_REVIEW
     };
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
@@ -68,11 +78,13 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
     static final int COL_MOVIE_RATING = 3;
     static final int COL_MOVIE_DESCRIPTION = 4;
     static final int COL_MOVIE_IMAGE = 5;
-    static final int COL_VIDEO_KEY = 6;
-    static final int COL_VIDEO_TYPE = 7;
-    static final int COL_VIDEO_NAME = 8;
-    static final int COL_REVIEW_AUTHOR =9;
-    static final int COL_REVIEW_CONTENT = 10;
+
+    static final int COL_REVIEW_AUTHOR = 0;
+    static final int COL_REVIEW_CONTENT = 1;
+
+    static final int COL_VIDEO_KEY = 0;
+    static final int COL_VIDEO_TYPE = 1;
+    static final int COL_VIDEO_NAME = 2;
 
 
     private TextView mTitleView;
@@ -125,6 +137,8 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
+        getLoaderManager().initLoader(REVIEW_LOADER, null, this);
+        getLoaderManager().initLoader(VIDEO_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -134,12 +148,30 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
         Log.v(LOG_TAG, "In onCreateLoader");
 
         if (mUri != null) {
-            return new CursorLoader(getActivity(),
-                    mUri,
-                    FAVORTIE_COLUMNS,
-                    null,
-                    null,
-                    null);
+            switch (i) {
+                case 0:
+                return new CursorLoader(getActivity(),
+                        mUri,
+                        FAVORTIE_COLUMNS,
+                        null,
+                        null,
+                        null);
+                case 1:
+                    return new CursorLoader(getActivity(),
+                            MovieContract.ReviewEntry.buildReviewUri(ContentUris.parseId(mUri)),
+                            REVIEW_COLUMNS,
+                            null,
+                            null,
+                            null);
+                case 2:
+                    return new CursorLoader(getActivity(),
+                            MovieContract.VideoEntry.buildVideoUri(ContentUris.parseId(mUri)),
+                            VIDEO_COLUMNS,
+                            null,
+                            null,
+                            null);
+
+            }
         }
         return  null;
     }
@@ -147,6 +179,7 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor data) {
         Log.v(LOG_TAG, "In onLoadFinished");
+
         if (data.moveToFirst() && data != null) {
 
 
@@ -197,9 +230,9 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
                 }});
 
 
-            data.moveToLast();
 
             try{
+                for (int i = 0; i <)
                 previewKey = data.getString(COL_VIDEO_KEY);
 
                 final String urlPreview = "http://img.youtube.com/vi/"+ previewKey + "/0.jpg";

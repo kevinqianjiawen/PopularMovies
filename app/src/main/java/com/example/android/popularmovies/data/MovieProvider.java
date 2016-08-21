@@ -26,30 +26,9 @@ public class MovieProvider extends ContentProvider{
 	private static final int MOVIE_VIDEO_WITH__ID = 400;
 	private static final int REVIEW = 500;
 	private static final int MOVIE_REVIEW_WITH_ID = 450;
-	private static final int MOVIE_REVIEW_VIDEO_WITH_ID = 600;
 
 
-	static SQLiteQueryBuilder joinTable(String movietable, String reviewtable, String videotable,  String movieid, String reviewid, String videoid) {
-		SQLiteQueryBuilder MovieVideoQueryBuilder = new SQLiteQueryBuilder();
 
-		//This is an inner join which looks like
-		//weather INNER JOIN location ON weather.location_id = location._id
-		MovieVideoQueryBuilder.setTables(
-				movietable + " LEFT OUTER JOIN " +
-						reviewtable +
-						" ON " + movietable +
-						"." + movieid +
-						" = " + reviewtable +
-						"." + reviewid +
-						" LEFT OUTER JOIN " +
-						videotable +
-						" ON " + movietable +
-						"." + movieid +
-						" = " +videotable +
-						"." + videoid);
-		MovieVideoQueryBuilder.setDistinct(true);
-		return MovieVideoQueryBuilder;
-	}
 
 	////////
 
@@ -65,7 +44,7 @@ public class MovieProvider extends ContentProvider{
 		matcher.addURI(authority, MovieContract.VideoEntry.TABLE_NAME , VIDEO);
 		matcher.addURI(authority, MovieContract.MovieEntry.TABLE_NAME +"/*/#", MOVIE_VIDEO_WITH__ID);
 		matcher.addURI(authority, MovieContract.ReviewEntry.TABLE_NAME , REVIEW);
-		matcher.addURI(authority, MovieContract.MovieEntry.TABLE_NAME + "/*/*/#", MOVIE_REVIEW_VIDEO_WITH_ID);
+		matcher.addURI(authority, MovieContract.MovieEntry.TABLE_NAME + "/*/#", MOVIE_REVIEW_WITH_ID);
 
 		return matcher;
 	}
@@ -92,13 +71,13 @@ public class MovieProvider extends ContentProvider{
 				return MovieContract.VideoEntry.CONTENT_DIR_TYPE;
 			}
 			case MOVIE_VIDEO_WITH__ID:{
-				return MovieContract.MovieEntry.CONTENT_DIR_TYPE;
-			}
-			case REVIEW:{
 				return MovieContract.VideoEntry.CONTENT_DIR_TYPE;
 			}
-			case MOVIE_REVIEW_VIDEO_WITH_ID:{
-				return MovieContract.MovieEntry.CONTENT_DIR_TYPE;
+			case REVIEW:{
+				return MovieContract.ReviewEntry.CONTENT_DIR_TYPE;
+			}
+			case MOVIE_REVIEW_WITH_ID:{
+				return MovieContract.ReviewEntry.CONTENT_DIR_TYPE;
 			}
 			default:{
 				throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -155,11 +134,24 @@ public class MovieProvider extends ContentProvider{
 						sortOrder);
 				break;
 			}
-			case MOVIE_REVIEW_VIDEO_WITH_ID:{
-				retCursor = joinTable(MovieContract.MovieEntry.TABLE_NAME, MovieContract.ReviewEntry.TABLE_NAME, MovieContract.VideoEntry.TABLE_NAME, MovieContract.MovieEntry.COLUMN_ID, MovieContract.ReviewEntry.COLUMN_MOVIE_ID, MovieContract.VideoEntry.COLUMN_MOVIE_ID).query(
-						mOpenHelper.getReadableDatabase(),
+			case MOVIE_REVIEW_WITH_ID:{
+				retCursor = mOpenHelper.getReadableDatabase().query(
+						MovieContract.ReviewEntry.TABLE_NAME,
 						projection,
-						MovieContract.MovieEntry.TABLE_NAME+"."+ MovieContract.MovieEntry.COLUMN_ID+" = ? ",
+						MovieContract.ReviewEntry.COLUMN_MOVIE_ID + " = ?",
+						new String[]{String.valueOf(ContentUris.parseId(uri))},
+						null,
+						null,
+						sortOrder);
+				break;
+
+			}
+
+			case MOVIE_VIDEO_WITH__ID:{
+				retCursor = mOpenHelper.getReadableDatabase().query(
+						MovieContract.VideoEntry.TABLE_NAME,
+						projection,
+						MovieContract.VideoEntry.COLUMN_MOVIE_ID + " = ?",
 						new String[]{String.valueOf(ContentUris.parseId(uri))},
 						null,
 						null,
