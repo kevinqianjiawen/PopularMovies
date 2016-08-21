@@ -19,6 +19,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         this.reviewList = reviewList;
     }
 
+
     @Override
     public int getItemCount() {
         return reviewList.size();

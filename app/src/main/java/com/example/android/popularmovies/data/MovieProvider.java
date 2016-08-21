@@ -42,9 +42,9 @@ public class MovieProvider extends ContentProvider{
 		matcher.addURI(authority, MovieContract.MovieEntry.TABLE_NAME, MOVIE);
 		matcher.addURI(authority, MovieContract.MovieEntry.TABLE_NAME + "/#", MOVIE_WITH_ID);
 		matcher.addURI(authority, MovieContract.VideoEntry.TABLE_NAME , VIDEO);
-		matcher.addURI(authority, MovieContract.MovieEntry.TABLE_NAME +"/*/#", MOVIE_VIDEO_WITH__ID);
+		matcher.addURI(authority, MovieContract.VideoEntry.TABLE_NAME +"/#", MOVIE_VIDEO_WITH__ID);
 		matcher.addURI(authority, MovieContract.ReviewEntry.TABLE_NAME , REVIEW);
-		matcher.addURI(authority, MovieContract.MovieEntry.TABLE_NAME + "/*/#", MOVIE_REVIEW_WITH_ID);
+		matcher.addURI(authority, MovieContract.ReviewEntry.TABLE_NAME + "/#", MOVIE_REVIEW_WITH_ID);
 
 		return matcher;
 	}
@@ -108,7 +108,7 @@ public class MovieProvider extends ContentProvider{
 						projection,
 						MovieContract.MovieEntry.COLUMN_ID + " = ?",
 						new String[] {String.valueOf(ContentUris.parseId(uri))},
-						MovieContract.VideoEntry.COLUMN_KEY,
+						null,
 						null,
 						sortOrder);
 				break;

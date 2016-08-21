@@ -101,6 +101,14 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
 
     private String previewKey;
 
+
+    private int  movieId;
+    private String movieTitle;
+    private Double movieRate;
+    private String movieDescription;
+    String movieDate;
+    String url;
+
     public DetailActivityFragmentFavorite() {
     }
 
@@ -147,7 +155,6 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Log.v(LOG_TAG, "In onCreateLoader");
 
-        if (mUri != null) {
             switch (i) {
                 case 0:
                 return new CursorLoader(getActivity(),
@@ -172,7 +179,7 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
                             null);
 
             }
-        }
+
         return  null;
     }
 
@@ -180,32 +187,28 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor data) {
         Log.v(LOG_TAG, "In onLoadFinished");
 
-        if (data.moveToFirst() && data != null) {
+
+            switch (cursorLoader.getId()) {
+                case 0:
+                    loadMovie(data);
+                    break;
+                case 1:
+                    loadReview(data);
+                    break;
+                case 2:
+                    loadVideo(data);
+                    break;
+
+
+            }
 
 
 
-        final int movieId = data.getInt(COL_MOVIE_ID);
-
-        final String movieTitle = data.getString(COL_MOVIE_TITLE);
-        mTitleView.setText(movieTitle);
-
-        final Double movieRate = data.getDouble(COL_MOVIE_RATING);
-        mRateView.setText("" + movieRate);
-
-        final String movieDescription = data.getString(COL_MOVIE_DESCRIPTION);
-        mDescriptionView.setText(movieDescription);
-
-        final String movieDate = data.getString(COL_MOVIE_DATE);
-        mDateView.setText(movieDate);
-
-        final String movieImage = data.getString(COL_MOVIE_IMAGE);
-        final String url = "http://image.tmdb.org/t/p/w500" + movieImage;
-        Picasso.with(getActivity()).load(url).into(mPosterView);
             mButtonView.setChecked(true);
 
             mButtonView.setOnCheckedChangeListener(new com.example.android.popularmovies.FloatingActionButton.OnCheckedChangeListener() {
                 @Override
-                public void onCheckedChanged(com.example.android.popularmovies.FloatingActionButton fabView, boolean isChecked) {
+                public void onCheckedChanged(com.example.android.popularmovies.FloatingActionButton fabview, boolean isChecked) {
                     if(isChecked){
                     ContentValues movieValues = new ContentValues();
 
@@ -231,90 +234,90 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
 
 
 
-            try{
-                for (int i = 0; i <)
-                previewKey = data.getString(COL_VIDEO_KEY);
 
-                final String urlPreview = "http://img.youtube.com/vi/"+ previewKey + "/0.jpg";
-                Picasso.with(getContext()).load(urlPreview).into(mTopPreview);
-
-                mTopPreview.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + previewKey));
-                        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
-                            getContext().startActivity(intent);
-                        }
-                    }
-                });
-            }catch (IndexOutOfBoundsException iobe){
-                mTopPreview.setImageResource(R.drawable.novideo);
-            }
 
         }
 
-        //try to get the data from data base and set recycleview;
 
-        List<AndroidFlavor.video> videoFromData = new ArrayList<>();
-        List<AndroidFlavor.review> reviewFromData = new ArrayList<>();
-        try {
-            data.moveToPrevious();
-            videoFromData.add(new AndroidFlavor.video(null, null, null));
-            for (int i = 0; i < data.getCount() - 1; i++) {
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    }
 
-                String keyNext = data.getString(COL_VIDEO_KEY);
-                if (!previewKey.equals(keyNext)) {
 
-                    videoFromData.add(new AndroidFlavor.video(data.getString(COL_VIDEO_NAME), data.getString(COL_VIDEO_KEY), data.getString(COL_VIDEO_TYPE)));
+    public void loadMovie(Cursor data){
+        if(data != null && data.moveToFirst()) {
+            movieId = data.getInt(COL_MOVIE_ID);
 
-                    previewKey = keyNext;
-                }
-                data.moveToPrevious();
+            movieTitle = data.getString(COL_MOVIE_TITLE);
+            mTitleView.setText(movieTitle);
 
-            }
+            movieRate = data.getDouble(COL_MOVIE_RATING);
+            mRateView.setText("" + movieRate);
 
-            videoList.setHasFixedSize(true);
-            LinearLayoutManager llm = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-            videoList.setLayoutManager(llm);
-            videoList.setAdapter(new VideoAdapter(videoFromData));
+            movieDescription = data.getString(COL_MOVIE_DESCRIPTION);
+            mDescriptionView.setText(movieDescription);
 
-        }catch (Exception cibe){
-            Log.v("data", "don't have video data");
+            movieDate = data.getString(COL_MOVIE_DATE);
+            mDateView.setText(movieDate);
+
+            final String movieImage = data.getString(COL_MOVIE_IMAGE);
+            url = "http://image.tmdb.org/t/p/w500" + movieImage;
+            Picasso.with(getActivity()).load(url).into(mPosterView);
         }
+    }
 
-        data.moveToLast();
+    public void loadReview(Cursor data){
+        if(data != null && data.moveToFirst()) {
+            List<AndroidFlavor.review> reviewFromData = new ArrayList<>();
 
-        try {
-
-            reviewFromData.add(new AndroidFlavor.review(data.getString(COL_REVIEW_AUTHOR), data.getString(COL_REVIEW_CONTENT)));
-
-            for (int j = 0; j < data.getCount() - 1; j++) {
+            for (int j = 0; j < data.getCount(); j++) {
                 String author = data.getString(COL_REVIEW_AUTHOR);
                 String content = data.getString(COL_REVIEW_CONTENT);
-                String authorNext = data.getString(COL_REVIEW_AUTHOR);
-                if (!author.equals(authorNext)) {
-                    reviewFromData.add(new AndroidFlavor.review(author, content));
-                }
+                reviewFromData.add(new AndroidFlavor.review(author, content));
+                data.moveToNext();
             }
 
             reviewList.setHasFixedSize(true);
             LinearLayoutManager llm2 = new LinearLayoutManager(getContext());
             reviewList.setLayoutManager(llm2);
             reviewList.setAdapter(new ReviewAdapter(reviewFromData));
-        } catch (Exception cibe){
-
-            Log.v("data", "don't have review data");
         }
-
-
-
-
     }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-    }
+    public void loadVideo(Cursor data) {
+        if (data != null && data.moveToFirst()) {
+            previewKey = data.getString(COL_VIDEO_KEY);
 
+            String urlPreview = "http://img.youtube.com/vi/" + previewKey + "/0.jpg";
+            Picasso.with(getContext()).load(urlPreview).into(mTopPreview);
+
+            mTopPreview.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + previewKey));
+                    if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+                        getContext().startActivity(intent);
+                    }
+                }
+            });
+            //try to get the data from data base and set recycleview;
+
+            List<AndroidFlavor.video> videoFromData = new ArrayList<>();
+
+
+            for (int i = 0; i < data.getCount(); i++) {
+
+                videoFromData.add(new AndroidFlavor.video(data.getString(COL_VIDEO_NAME), data.getString(COL_VIDEO_KEY), data.getString(COL_VIDEO_TYPE)));
+                data.moveToNext();
+            }
+            videoList.setHasFixedSize(true);
+            LinearLayoutManager llm = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+            videoList.setLayoutManager(llm);
+            videoList.setAdapter(new VideoAdapter(videoFromData));
+        } else {
+            mTopPreview.setImageResource(R.drawable.novideo);
+        }
+    }
 
 }
