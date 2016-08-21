@@ -109,6 +109,8 @@ public class DetailActivityFragment extends Fragment{
                 topPreview.setImageResource(R.drawable.novideo);
             }
 
+
+
             RecyclerView videoList = (RecyclerView) rootView.findViewById(R.id.recyclerview_video);
             videoList.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -129,8 +131,6 @@ public class DetailActivityFragment extends Fragment{
             LinearLayoutManager llm2 = new LinearLayoutManager(getContext());
             reviewList.setLayoutManager(llm2);
             reviewList.setAdapter(new ReviewAdapter(movie.getReviewList()));
-
-
 
 
 
@@ -208,6 +208,8 @@ public class DetailActivityFragment extends Fragment{
                     }else {
 
                         getContext().getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI, "movie_id=?", new String[]{String.valueOf(idText)});
+                        getContext().getContentResolver().delete(MovieContract.ReviewEntry.CONTENT_URI, "id=?", new String[]{String.valueOf(idText)});
+                        getContext().getContentResolver().delete(MovieContract.VideoEntry.CONTENT_URI, "id=?", new String[]{String.valueOf(idText)});
                         Log.v("DATABASE", "Delete complete");
 
                     }

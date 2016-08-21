@@ -35,18 +35,19 @@ public class MovieProvider extends ContentProvider{
 		//This is an inner join which looks like
 		//weather INNER JOIN location ON weather.location_id = location._id
 		MovieVideoQueryBuilder.setTables(
-				movietable + " INNER JOIN " +
+				movietable + " LEFT OUTER JOIN " +
 						reviewtable +
 						" ON " + movietable +
 						"." + movieid +
 						" = " + reviewtable +
 						"." + reviewid +
-						" INNER JOIN " +
+						" LEFT OUTER JOIN " +
 						videotable +
 						" ON " + movietable +
 						"." + movieid +
 						" = " +videotable +
 						"." + videoid);
+		MovieVideoQueryBuilder.setDistinct(true);
 		return MovieVideoQueryBuilder;
 	}
 
@@ -128,7 +129,7 @@ public class MovieProvider extends ContentProvider{
 						projection,
 						MovieContract.MovieEntry.COLUMN_ID + " = ?",
 						new String[] {String.valueOf(ContentUris.parseId(uri))},
-						null,
+						MovieContract.VideoEntry.COLUMN_KEY,
 						null,
 						sortOrder);
 				break;

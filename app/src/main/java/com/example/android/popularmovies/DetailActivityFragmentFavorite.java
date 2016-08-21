@@ -7,6 +7,7 @@ package com.example.android.popularmovies;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -33,6 +34,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -85,6 +87,7 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
     private RecyclerView videoList;
     private RecyclerView reviewList;
 
+    private String previewKey;
 
     public DetailActivityFragmentFavorite() {
     }
@@ -182,16 +185,22 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
 
                     getContext().getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, movieValues);
 
+
+
                     Log.v("DATABASE", "Insert complete");
                 }else {
                     getContext().getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI, "movie_id=?", new String[]{String.valueOf(movieId)});
+                        getContext().getContentResolver().delete(MovieContract.ReviewEntry.CONTENT_URI, "id=?", new String[]{String.valueOf(movieId)});
+                        getContext().getContentResolver().delete(MovieContract.VideoEntry.CONTENT_URI, "id=?", new String[]{String.valueOf(movieId)});
                     Log.v("DATABASE", "Delete complete");
                 }
                 }});
 
 
+            data.moveToLast();
+
             try{
-                final String previewKey = data.getString(COL_VIDEO_KEY);
+                previewKey = data.getString(COL_VIDEO_KEY);
 
                 final String urlPreview = "http://img.youtube.com/vi/"+ previewKey + "/0.jpg";
                 Picasso.with(getContext()).load(urlPreview).into(mTopPreview);
@@ -205,7 +214,8 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
                             getContext().startActivity(intent);
                         }
                     }
-                });}catch (IndexOutOfBoundsException iobe){
+                });
+            }catch (IndexOutOfBoundsException iobe){
                 mTopPreview.setImageResource(R.drawable.novideo);
             }
 
@@ -215,24 +225,58 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
 
         List<AndroidFlavor.video> videoFromData = new ArrayList<>();
         List<AndroidFlavor.review> reviewFromData = new ArrayList<>();
+        try {
+            data.moveToPrevious();
+            videoFromData.add(new AndroidFlavor.video(null, null, null));
+            for (int i = 0; i < data.getCount() - 1; i++) {
 
-        for (int i = 0; i < data.getCount()-1; i++){
-            data.moveToNext();
-            videoFromData.add(new AndroidFlavor.video(data.getString(COL_VIDEO_NAME), data.getString(COL_VIDEO_KEY), data.getString(COL_VIDEO_TYPE)));
+                String keyNext = data.getString(COL_VIDEO_KEY);
+                if (!previewKey.equals(keyNext)) {
+
+                    videoFromData.add(new AndroidFlavor.video(data.getString(COL_VIDEO_NAME), data.getString(COL_VIDEO_KEY), data.getString(COL_VIDEO_TYPE)));
+
+                    previewKey = keyNext;
+                }
+                data.moveToPrevious();
+
+            }
+
+            videoList.setHasFixedSize(true);
+            LinearLayoutManager llm = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+            videoList.setLayoutManager(llm);
+            videoList.setAdapter(new VideoAdapter(videoFromData));
+
+        }catch (Exception cibe){
+            Log.v("data", "don't have video data");
+        }
+
+        data.moveToLast();
+
+        try {
+
             reviewFromData.add(new AndroidFlavor.review(data.getString(COL_REVIEW_AUTHOR), data.getString(COL_REVIEW_CONTENT)));
 
+            for (int j = 0; j < data.getCount() - 1; j++) {
+                String author = data.getString(COL_REVIEW_AUTHOR);
+                String content = data.getString(COL_REVIEW_CONTENT);
+                String authorNext = data.getString(COL_REVIEW_AUTHOR);
+                if (!author.equals(authorNext)) {
+                    reviewFromData.add(new AndroidFlavor.review(author, content));
+                }
+            }
+
+            reviewList.setHasFixedSize(true);
+            LinearLayoutManager llm2 = new LinearLayoutManager(getContext());
+            reviewList.setLayoutManager(llm2);
+            reviewList.setAdapter(new ReviewAdapter(reviewFromData));
+        } catch (Exception cibe){
+
+            Log.v("data", "don't have review data");
         }
 
 
-        videoList.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        videoList.setLayoutManager(llm);
-        videoList.setAdapter(new VideoAdapter(videoFromData));
 
-        reviewList.setHasFixedSize(true);
-        LinearLayoutManager llm2 = new LinearLayoutManager(getContext());
-        reviewList.setLayoutManager(llm2);
-        reviewList.setAdapter(new ReviewAdapter(reviewFromData));
+
     }
 
     @Override
