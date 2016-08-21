@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by kevin on 8/4/2016.
+ * Created by kevin on 8/20/2016.
  */
 public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
 
@@ -22,7 +22,7 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
 
-        //getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         super.onCreate(savedInstanceState);
     }

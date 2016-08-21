@@ -33,6 +33,7 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/action_settings"
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

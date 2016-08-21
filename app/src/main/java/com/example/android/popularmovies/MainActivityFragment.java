@@ -110,7 +110,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.action_refresh){
+        if(id == R.id.action_refresh && !Utility.getSortBy(getContext()).equals("favorite")){
             updateMovie();
             return true;
         }
