@@ -49,9 +49,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     private String sort_by;
 
-    private int mPosition = GridView.INVALID_POSITION;
 
-    private  static final String SELECTED_KEY = "selected_position";
 
 
     private static final int FAVORITE_LOADER = 0;
