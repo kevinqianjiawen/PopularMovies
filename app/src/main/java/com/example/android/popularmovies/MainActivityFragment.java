@@ -223,7 +223,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        getLoaderManager().initLoader(FAVORITE_LOADER, null, this);
+        if (getLoaderManager().getLoader(FAVORITE_LOADER) != null) {
+            getLoaderManager().restartLoader(FAVORITE_LOADER, null, this);
+        } else {
+            getLoaderManager().initLoader(FAVORITE_LOADER, null, this);
+        }
         super.onActivityCreated(savedInstanceState);
     }
 
