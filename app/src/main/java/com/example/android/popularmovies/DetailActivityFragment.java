@@ -106,7 +106,7 @@ public class DetailActivityFragment extends Fragment{
                     }
                 }
             });}catch (IndexOutOfBoundsException iobe){
-                topPreview.setImageResource(R.drawable.novideo);
+                topPreview.setImageResource(R.drawable.no_video);
             }
 
 

@@ -316,7 +316,7 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
             videoList.setLayoutManager(llm);
             videoList.setAdapter(new VideoAdapter(videoFromData));
         } else {
-            mTopPreview.setImageResource(R.drawable.novideo);
+            mTopPreview.setImageResource(R.drawable.no_video);
         }
     }
 

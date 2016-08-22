@@ -19,7 +19,7 @@ import java.util.ArrayList;
 /**
  * Created by kevin on 8/10/2016.
  */
-public class movieAdapter extends CursorAdapter {
+public class MovieAdapter extends CursorAdapter {
 
     public static class FavortieViewHolder {
         public final ImageView iconView;
@@ -42,7 +42,7 @@ public class movieAdapter extends CursorAdapter {
 
         }
     }
-    public movieAdapter(Context context, Cursor c, int flags){
+    public MovieAdapter(Context context, Cursor c, int flags){
         super(context, c, flags);
     }
 

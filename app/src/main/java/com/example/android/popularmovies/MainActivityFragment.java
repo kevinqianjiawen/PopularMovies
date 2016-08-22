@@ -1,8 +1,6 @@
 package com.example.android.popularmovies;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -17,7 +15,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.android.popularmovies.data.MovieContract;
@@ -40,7 +36,7 @@ import java.util.List;
 public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private AndroidFlavorAdapter flavorAdapter;
-    private movieAdapter favoriteAdapter;
+    private MovieAdapter favoriteAdapter;
 
     private GridView gridView;
     private GridView gridViewFavorite;
@@ -161,7 +157,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
             gridViewFavorite = (GridView) rootView.findViewById(R.id.gridview_poster);
 
-            favoriteAdapter = new movieAdapter(getActivity(), null, 0);
+            favoriteAdapter = new MovieAdapter(getActivity(), null, 0);
             gridViewFavorite.setAdapter(favoriteAdapter);
 
 
