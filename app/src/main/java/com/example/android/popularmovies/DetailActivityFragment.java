@@ -61,7 +61,6 @@ public class DetailActivityFragment extends Fragment{
         if ((intent != null && intent.hasExtra("movie") ) || movie != null) {
             if(movie == null) {
                 movie = (AndroidFlavor) intent.getParcelableExtra("movie");
-                //Log.v("bad", movie.toString());
             }
 
 
@@ -85,7 +84,7 @@ public class DetailActivityFragment extends Fragment{
             overview.setText(descriptionText);
 
             final String url = "http://image.tmdb.org/t/p/w500" + movie.imageToStr();
-            //Log.v("pop", url);
+
             ImageView iconView = (ImageView) rootView.findViewById(R.id.detail_image);
             Picasso.with(getActivity()).load(url).into(iconView);
 
@@ -117,14 +116,6 @@ public class DetailActivityFragment extends Fragment{
             videoList.setLayoutManager(llm);
             videoList.setAdapter(new VideoAdapter(movie.getVideoList()));
 
-//            TextView test = (TextView) rootView.findViewById(R.id.author);
-//            final String auother = movie.getReviewList().get(0).getAuthor();
-//            test.setText(auother);
-//
-//
-//            TextView test2 = (TextView) rootView.findViewById(R.id.review);
-//            final String content = movie.getReviewList().get(0).getContent().substring(0, 100);
-//            test2.setText(content);
 
             final RecyclerView reviewList = (RecyclerView) rootView.findViewById(R.id.recyclerview_review);
             reviewList.setHasFixedSize(true);

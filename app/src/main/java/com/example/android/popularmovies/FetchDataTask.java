@@ -59,7 +59,6 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
 
             URL url = new URL(uri.toString());
 
-            //Log.v("Popular movie", uri.toString());
 
             //Create a request to the moviedb, open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -84,7 +83,7 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
             }
 
             movieJsonStr = buffer.toString();
-            //Log.v("MovieFragment", movieJsonStr);
+
         } catch (IOException e) {
             return null;
         } finally {
@@ -201,7 +200,6 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
 
                 URL url = new URL(uri.toString());
 
-                //Log.v("Popular movie", uri.toString());
 
                 //Create a request to the moviedb, open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -226,7 +224,7 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
                 }
 
                 movieJsonStr = buffer.toString();
-                //Log.v("MovieFragment", movieJsonStr);
+
             } catch (IOException e) {
                 return null;
             } finally {
@@ -246,7 +244,6 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
             try {
                     return getVideoData(movieJsonStr);
 
-                //return getData(movieJsonStr);
             } catch (JSONException e) {
                 Log.e("Popular Movie", e.getMessage(), e);
                 e.printStackTrace();
@@ -275,7 +272,6 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
 
                 URL url = new URL(uri.toString());
 
-                //Log.v("Popular movie", uri.toString());
 
                 //Create a request to the moviedb, open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -300,7 +296,7 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
                 }
 
                 movieJsonStr = buffer.toString();
-                //Log.v("MovieFragment", movieJsonStr);
+
             } catch (IOException e) {
                 return null;
             } finally {
@@ -320,7 +316,6 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
             try {
                 return getReviewData(movieJsonStr);
 
-                //return getData(movieJsonStr);
             } catch (JSONException e) {
                 Log.e("Popular Movie", e.getMessage(), e);
                 e.printStackTrace();

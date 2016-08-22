@@ -44,9 +44,6 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
 
-
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         if (savedInstanceState == null) {
 
             // Create the detail fragment and add it to the activity

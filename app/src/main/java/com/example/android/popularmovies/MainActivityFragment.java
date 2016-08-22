@@ -197,12 +197,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                    //Toast.makeText(getActivity(), "debug", Toast.LENGTH_SHORT).show();
+
 
                      movieIntent = flavorAdapter.getItem(position);
 
-                    //Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra("movie", movieIntent);
-                    //startActivity(intent);
                     ((Callback) getActivity())
                             .onItemSelected(movieIntent);
 

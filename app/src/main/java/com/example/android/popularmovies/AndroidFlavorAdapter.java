@@ -22,22 +22,11 @@ public class AndroidFlavorAdapter extends ArrayAdapter<AndroidFlavor> {
 
     public static class ViewHolder {
         public final ImageView iconView;
-//        public final TextView titleView;
-//        public final ImageView posterView;
-//        public final TextView dateView;
-//        public final TextView rateView;
-//        public final CheckBox starView;
-//        public final TextView descriptionView;
 
 
         public ViewHolder(View view) {
             iconView = (ImageView) view.findViewById(R.id.list_item_icon);
-//            titleView = (TextView) view.findViewById(R.id.detail_title);
-//            posterView = (ImageView) view.findViewById(R.id.detail_image);
-//            dateView = (TextView) view.findViewById(R.id.detail_release);
-//            rateView = (TextView) view.findViewById(R.id.detail_rate);
-//            starView = (CheckBox) view.findViewById(R.id.star);
-//            descriptionView = (TextView) view.findViewById(R.id.detail_overview);
+
 
         }
     }
@@ -85,16 +74,7 @@ public class AndroidFlavorAdapter extends ArrayAdapter<AndroidFlavor> {
         ViewHolder viewHolder = new ViewHolder(convertView);
         String url = "http://image.tmdb.org/t/p/w185" + androidFlavor.image;
 
-
-        //ImageView iconView = (ImageView) convertView.findViewById(R.id.list_item_icon);
         Picasso.with(getContext()).load(url).into(viewHolder.iconView);
-        //iconView.setImageResource(androidFlavor.image);
-
-        //TextView versionNameView = (TextView) convertView.findViewById(R.id.deatil_overview);
-        //versionNameView.setText(androidFlavor.movieDate);
-
-        //TextView versionNumberView = (TextView) convertView.findViewById(R.id.list_item_versionnumber_textview);
-        //versionNumberView.setText(androidFlavor.movieTitle);
 
         return convertView;
     }

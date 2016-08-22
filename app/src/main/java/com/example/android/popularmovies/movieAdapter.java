@@ -23,22 +23,11 @@ public class MovieAdapter extends CursorAdapter {
 
     public static class FavortieViewHolder {
         public final ImageView iconView;
-//        public final TextView titleView;
-//        public final ImageView posterView;
-//        public final TextView dateView;
-//        public final TextView rateView;
-//        public final CheckBox starView;
-//        public final TextView descriptionView;
+
 
 
         public FavortieViewHolder(View view) {
             iconView = (ImageView) view.findViewById(R.id.list_item_icon);
-//            titleView = (TextView) view.findViewById(R.id.detail__favorite_title);
-//            posterView = (ImageView) view.findViewById(R.id.detail_favorite_image);
-//            dateView = (TextView) view.findViewById(R.id.detail_favorite_release);
-//            rateView = (TextView) view.findViewById(R.id.detail_favorite_rate);
-//            starView = (CheckBox) view.findViewById(R.id.favorite_star);
-//            descriptionView = (TextView) view.findViewById(R.id.detail_favorite_overview);
 
         }
     }
@@ -70,7 +59,7 @@ public class MovieAdapter extends CursorAdapter {
         // our view is pretty simple here --- just a text view
         // we'll keep the UI functional with a simple (and slow!) binding.
         String url = "http://image.tmdb.org/t/p/w185" + convertCursorRowToUXFormat(cursor);
-        //ImageView iconView = (ImageView) view.findViewById(R.id.list_item_icon);
+
         Picasso.with(context).load(url).into(viewHolder.iconView);
     }
 }

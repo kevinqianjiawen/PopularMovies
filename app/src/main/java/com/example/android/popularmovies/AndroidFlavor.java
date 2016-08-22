@@ -51,8 +51,6 @@ public class AndroidFlavor implements Parcelable{
     }
 
     public double rateGet(){
-        //DecimalFormat oneDec = new DecimalFormat();
-        //oneDec.setDecimalSeparatorAlwaysShown(false);
         return movieRate;
     }
 
