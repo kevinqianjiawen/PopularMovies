@@ -1,5 +1,6 @@
 package com.example.android.popularmovies;
 
+import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
@@ -155,7 +156,10 @@ public class DetailActivityFragment extends Fragment{
                         movieValues.put(MovieContract.MovieEntry.COLUMN_DESCRIPTION, descriptionText);
                         movieValues.put(MovieContract.MovieEntry.COLUMN_IMAGE, url);
 
-                        getContext().getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, movieValues);
+
+                        AsyncQueryHandler insertHandler = new AsyncQueryHandler(getActivity().getContentResolver()){};
+
+                        insertHandler.startInsert(1, null, MovieContract.MovieEntry.CONTENT_URI, movieValues);
 
                         int videoSize = movie.getVideoList().size();
                         Vector<ContentValues> videoValueList = new Vector<ContentValues>(videoSize);
@@ -173,7 +177,9 @@ public class DetailActivityFragment extends Fragment{
                         if ( videoValueList.size() > 0 ) {
                             ContentValues[] videoArray = new ContentValues[videoValueList.size()];
                             videoValueList.toArray(videoArray);
-                            getContext().getContentResolver().bulkInsert(MovieContract.VideoEntry.CONTENT_URI, videoArray);
+                            for (ContentValues video : videoArray) {
+                                insertHandler.startInsert(2, null, MovieContract.VideoEntry.CONTENT_URI, video);
+                            }
                         }
 
 
@@ -193,7 +199,9 @@ public class DetailActivityFragment extends Fragment{
                         if ( reviewValueList.size() > 0 ) {
                             ContentValues[] reviewArray = new ContentValues[reviewValueList.size()];
                             reviewValueList.toArray(reviewArray);
-                            getContext().getContentResolver().bulkInsert(MovieContract.ReviewEntry.CONTENT_URI, reviewArray);
+                            for(ContentValues review : reviewArray) {
+                                insertHandler.startInsert(3, null, MovieContract.ReviewEntry.CONTENT_URI, review);
+                            }
                         }
 
 
@@ -204,10 +212,11 @@ public class DetailActivityFragment extends Fragment{
 
 
                     }else {
+                        AsyncQueryHandler deleteHandler = new AsyncQueryHandler(getActivity().getContentResolver()){};
 
-                        getContext().getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI, "movie_id=?", new String[]{String.valueOf(idText)});
-                        getContext().getContentResolver().delete(MovieContract.ReviewEntry.CONTENT_URI, "id=?", new String[]{String.valueOf(idText)});
-                        getContext().getContentResolver().delete(MovieContract.VideoEntry.CONTENT_URI, "id=?", new String[]{String.valueOf(idText)});
+                        deleteHandler.startDelete(1, null, MovieContract.MovieEntry.CONTENT_URI, "movie_id=?", new String[]{String.valueOf(idText)});
+                        deleteHandler.startDelete(2, null, MovieContract.ReviewEntry.CONTENT_URI, "id=?", new String[]{String.valueOf(idText)});
+                        deleteHandler.startDelete(3, null, MovieContract.VideoEntry.CONTENT_URI, "id=?", new String[]{String.valueOf(idText)});
                         Log.v("DATABASE", "Delete complete");
 
                     }
