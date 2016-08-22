@@ -19,15 +19,31 @@ import android.widget.TextView;
 import com.example.android.popularmovies.data.MovieContract;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by kevin on 8/12/2016.
  */
 public class DetailActivityFragment extends Fragment{
     private static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
+
+    @BindView(R.id.moviebar) Toolbar toolbar;
+    @BindView(R.id.detail_title) TextView title;
+    @BindView(R.id.detail_release) TextView release;
+    @BindView(R.id.detail_rate) TextView rate;
+    @BindView(R.id.detail_overview) TextView overview;
+    @BindView(R.id.detail_image) ImageView iconView;
+    @BindView(R.id.preview) ImageView topPreview;
+    @BindView(R.id.recyclerview_video) RecyclerView videoList;
+    @BindView(R.id.recyclerview_review) RecyclerView reviewList;
+    @BindView(R.id.action_button) FloatingActionButton checkBox;
 
 
 
@@ -46,7 +62,8 @@ public class DetailActivityFragment extends Fragment{
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.moviebar);
+        ButterKnife.bind(this, rootView);
+
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -66,29 +83,22 @@ public class DetailActivityFragment extends Fragment{
 
             final int idText = movie.getid();
 
-            TextView title = (TextView) rootView.findViewById(R.id.detail_title);
             final String titleText = movie.titleToStr();
             title.setText(titleText);
 
-            TextView release = (TextView) rootView.findViewById(R.id.detail_release);
             final String releaseText = movie.dateToStr();
             release.setText(releaseText);
 
-
-            TextView rate = (TextView) rootView.findViewById(R.id.detail_rate);
             final double rateText = movie.rateGet();
             rate.setText("" + rateText);
 
-            TextView overview = (TextView) rootView.findViewById(R.id.detail_overview);
             final String descriptionText = movie.descriptionToStr();
             overview.setText(descriptionText);
 
             final String url = "http://image.tmdb.org/t/p/w500" + movie.imageToStr();
 
-            ImageView iconView = (ImageView) rootView.findViewById(R.id.detail_image);
             Picasso.with(getActivity()).load(url).into(iconView);
 
-            ImageView topPreview = (ImageView) rootView.findViewById(R.id.preview);
             try{
             final String previewKey = movie.getVideoList().get(0).getKey();
 
@@ -110,14 +120,12 @@ public class DetailActivityFragment extends Fragment{
 
 
 
-            RecyclerView videoList = (RecyclerView) rootView.findViewById(R.id.recyclerview_video);
             videoList.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
             videoList.setLayoutManager(llm);
             videoList.setAdapter(new VideoAdapter(movie.getVideoList()));
 
 
-            final RecyclerView reviewList = (RecyclerView) rootView.findViewById(R.id.recyclerview_review);
             reviewList.setHasFixedSize(true);
             LinearLayoutManager llm2 = new LinearLayoutManager(getContext());
             reviewList.setLayoutManager(llm2);
@@ -133,7 +141,6 @@ public class DetailActivityFragment extends Fragment{
 
 
             //a star check box, if the user click it, the favorite will add to the database;
-            final com.example.android.popularmovies.FloatingActionButton checkBox = (com.example.android.popularmovies.FloatingActionButton) rootView.findViewById(R.id.action_button);
             checkBox.setOnCheckedChangeListener(new com.example.android.popularmovies.FloatingActionButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(com.example.android.popularmovies.FloatingActionButton fabView, boolean isChecked) {

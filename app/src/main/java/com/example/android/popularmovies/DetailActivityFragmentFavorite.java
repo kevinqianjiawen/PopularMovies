@@ -37,6 +37,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -87,17 +90,18 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
     static final int COL_VIDEO_NAME = 2;
 
 
-    private TextView mTitleView;
-    private ImageView mPosterView;
-    private TextView mDateView;
-    private TextView mRateView;
-    private TextView mDescriptionView;
+    @BindView(R.id.detail_title) TextView mTitleView;
+    @BindView(R.id.detail_image) ImageView mPosterView;
+    @BindView(R.id.detail_release) TextView mDateView;
+    @BindView(R.id.detail_rate)  TextView mRateView;
+    @BindView(R.id.detail_overview) TextView mDescriptionView;
+    @BindView(R.id.action_button) com.example.android.popularmovies.FloatingActionButton mButtonView;
+    @BindView(R.id.preview) ImageView mTopPreview;
+    @BindView(R.id.recyclerview_video)RecyclerView videoList;
+    @BindView(R.id.recyclerview_review) RecyclerView reviewList;
+    @BindView(R.id.moviebar) Toolbar toolbar;
 
-    private com.example.android.popularmovies.FloatingActionButton mButtonView;
 
-    private ImageView mTopPreview;
-    private RecyclerView videoList;
-    private RecyclerView reviewList;
 
     private String previewKey;
 
@@ -122,21 +126,11 @@ public class DetailActivityFragmentFavorite extends Fragment implements LoaderMa
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.moviebar);
+        ButterKnife.bind(this, rootView);
+
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        mPosterView = (ImageView)rootView.findViewById(R.id.detail_image);
-        mTitleView = (TextView) rootView.findViewById(R.id.detail_title);
-        mDateView = (TextView)rootView.findViewById(R.id.detail_release);
-        mRateView = (TextView) rootView.findViewById(R.id.detail_rate);
-        mDescriptionView = (TextView) rootView.findViewById(R.id.detail_overview);
-        mButtonView = (com.example.android.popularmovies.FloatingActionButton) rootView.findViewById(R.id.action_button);
-
-        mTopPreview = (ImageView) rootView.findViewById(R.id.preview);
-        videoList = (RecyclerView) rootView.findViewById(R.id.recyclerview_video);
-        reviewList = (RecyclerView) rootView.findViewById(R.id.recyclerview_review);
 
 
         return rootView;
