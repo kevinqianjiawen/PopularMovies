@@ -11,9 +11,8 @@
     This layout is a two-pane layout for the Items master/detail flow.
     -->
 
-    <fragment
-        android:id="@+id/fragment_movie"
-        android:name="com.example.android.popularmovies.MainActivityFragment"
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
