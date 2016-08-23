@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * Created by kevin on 5/15/2016.
  */
-public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivityFragment extends Fragment {
 
     private AndroidFlavorAdapter flavorAdapter;
     private MovieAdapter favoriteAdapter;
@@ -78,9 +78,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                   */
                         public void onItemSelected(AndroidFlavor androidFlavor);
 
-              //DetailFragmentFavorite call back for when an item has been selected.
-
-                        public void onItemSelected(Uri uri);
             }
 
 
@@ -92,6 +89,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
+
     }
 
     @Override
@@ -115,16 +113,24 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public void onStart() {
         super.onStart();
         updateMovie();
+
+
     }
+
+
+
+
 
     public void updateMovie(){
         if(isOnline()) {
-            FetchDataTask movieTask = new FetchDataTask(getActivity(), flavorAdapter);
-            String sort = PreferenceManager.getDefaultSharedPreferences(getActivity())
-                    .getString(getString(R.string.pref_key),
-                            getString(R.string.pref_key_popular));
 
-            movieTask.execute(sort);
+                FetchDataTask movieTask = new FetchDataTask(getActivity(), flavorAdapter);
+                String sort = PreferenceManager.getDefaultSharedPreferences(getActivity())
+                        .getString(getString(R.string.pref_key),
+                                getString(R.string.pref_key_popular));
+
+                movieTask.execute(sort);
+
         }else {
             Toast.makeText(getContext(),"The wifi is unavilable",Toast.LENGTH_SHORT).show();
         }
@@ -147,38 +153,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-       sort_by = Utility.getSortBy(getContext());
-        if (sort_by.equals(getString(R.string.pref_key_favortie))) {
-            //set the gridview as favorite
-            rootView = inflater.inflate(R.layout.fragment_main,container,false);
 
-            final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.main_bar);
-            ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-
-            gridViewFavorite = (GridView) rootView.findViewById(R.id.gridview_poster);
-
-            favoriteAdapter = new MovieAdapter(getActivity(), null, 0);
-            gridViewFavorite.setAdapter(favoriteAdapter);
-
-
-            gridViewFavorite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
-                    Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-                    if (cursor != null) {
-                        //Intent intent = new Intent(getActivity(), DetailActivity.class).setData(MovieContract.MovieEntry.CONTENT_URI);
-                        //startActivity(intent);
-                        ((Callback) getActivity()).onItemSelected(MovieContract.MovieEntry.buildMovieUri(cursor.getInt(COL_MOVIE_ID)));
-                    }
-
-                }
-            });
-
-
-
-
-        }else {
             rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.main_bar);
@@ -210,7 +185,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             });
 
 
-        }
+
 
 
 
@@ -222,42 +197,25 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        if (getLoaderManager().getLoader(FAVORITE_LOADER) != null) {
-            getLoaderManager().restartLoader(FAVORITE_LOADER, null, this);
-        } else {
-            getLoaderManager().initLoader(FAVORITE_LOADER, null, this);
-        }
-        super.onActivityCreated(savedInstanceState);
-    }
+    public void onResume() {
+        super.onResume();
+        String sort_by = Utility.getSortBy(getContext());
+        if (sort_by.equals(getString(R.string.pref_key_favortie))) {
+            // Create fragment and give it an argument specifying the article it should show
+            MainActivityFragmentFavorite newFragment = new MainActivityFragmentFavorite();
+            FragmentManager manager = getFragmentManager();
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        Uri movieUri = MovieContract.MovieEntry.CONTENT_URI;
+            FragmentTransaction transaction = manager.beginTransaction();
 
-        return new CursorLoader(getActivity(),
-                movieUri,
-                FAVORTIE_COLUMNS,
-                null,
-                null,
-                null);
-    }
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        //because I use two adapter to get the data from the internet or sql
-        if (favoriteAdapter != null) {
-            favoriteAdapter.swapCursor(cursor);
-        }
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.fragment_container, newFragment);
+            transaction.addToBackStack(null);
 
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        if (favoriteAdapter != null) {
-            favoriteAdapter.swapCursor(null);
+// Commit the transaction
+            transaction.commit();
         }
     }
-
 
 
 }

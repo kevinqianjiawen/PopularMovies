@@ -113,7 +113,7 @@ public class FetchDataTask extends AsyncTask<String, Void, ArrayList<AndroidFlav
     @Override
     protected void onPostExecute(ArrayList<AndroidFlavor> result) {
         if (result != null) {
-            flavorAdapter.clear();
+                flavorAdapter.clear();
             for (AndroidFlavor movieStr : result) {
                 flavorAdapter.add(movieStr);
             }

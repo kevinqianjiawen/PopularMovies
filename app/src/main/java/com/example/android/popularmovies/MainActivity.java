@@ -1,25 +1,21 @@
 package com.example.android.popularmovies;
 
-import android.content.Context;
+
+
+
+
+import android.app.FragmentManager;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
 
 import com.facebook.stetho.Stetho;
 
-public class MainActivity extends AppCompatActivity implements MainActivityFragment.Callback{
+public class MainActivity extends AppCompatActivity implements MainActivityFragment.Callback, MainActivityFragmentFavorite.Callback{
     private boolean mTwoPane;
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
 
@@ -42,7 +38,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             mTwoPane = false;
         }
 
+        String sort_by = Utility.getSortBy(getApplicationContext());
+        if (sort_by.equals(getString(R.string.pref_key_favortie))) {
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack so the user can navigate back
+            transaction.add(R.id.fragment_container, new MainActivityFragmentFavorite());
+
+// Commit the transaction
+            transaction.commit();
+
+// Commit the transaction
+        } else{
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack so the user can navigate back
+            transaction.add(R.id.fragment_container, new MainActivityFragment());
+
+// Commit the transaction
+            transaction.commit();
+        }
+
     }
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -115,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             startActivity(intent);
         }
     }
+
+
 
 
 }
