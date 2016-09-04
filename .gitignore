@@ -6,3 +6,5 @@
 /build
 /captures
 *.gradleapp/build.gradle
+
+build.gradle
