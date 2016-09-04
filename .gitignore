@@ -7,4 +7,4 @@
 /captures
 *.gradleapp/build.gradle
 
-build.gradle
+app/build.gradle
