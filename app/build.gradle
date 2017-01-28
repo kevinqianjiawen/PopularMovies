@@ -6,7 +6,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.example.android.popularmovies"
+        applicationId "com.jiawenqian.android.popularmovies"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
@@ -24,7 +24,7 @@ android {
     }
 
     buildTypes.each {
-        it.buildConfigField 'String', 'POPULAR_MOVIES_API_KEY', "\"API_KEY\""
+        it.buildConfigField 'String', 'POPULAR_MOVIES_API_KEY', "\"c97688671858d5f947be12c060a50190\""
     }
 
 
